@@ -15,6 +15,8 @@ export type FeedItem = {
   isMine: boolean
   category: string
   text: string
+  photoUrl: string | null
+  videoUrl: string | null
   createdAt: string
   counts: Record<ReactionType, number>
   mine: ReactionType[]
@@ -56,6 +58,8 @@ export async function getCommunityFeed(currentUserId: string, limit = 50): Promi
       isMine: h.userId === currentUserId,
       category: h.category,
       text: h.text,
+      photoUrl: h.photoUrl,
+      videoUrl: h.videoUrl,
       createdAt: h.createdAt.toISOString(),
       counts,
       mine,

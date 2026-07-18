@@ -3,6 +3,7 @@ import { requireUser } from '@/lib/session'
 import { getCommunityFeed } from '@/lib/social'
 import { CATEGORY_BY_KEY, categoryLabel } from '@/lib/categories'
 import ReactionBar from '@/components/ReactionBar'
+import HighlightMedia from '@/components/HighlightMedia'
 
 function fmt(d: string) {
   return new Date(d).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
@@ -39,6 +40,7 @@ export default async function CommunityPage() {
                   <span className="text-gray-400 text-xs">· {fmt(h.createdAt)}</span>
                 </div>
                 <p className="text-gray-700 whitespace-pre-wrap mb-3">{h.text}</p>
+                <HighlightMedia photoUrl={h.photoUrl} videoUrl={h.videoUrl} />
                 <ReactionBar highlightId={h.id} counts={h.counts} mine={h.mine} />
               </div>
             )

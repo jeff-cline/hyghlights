@@ -4,6 +4,7 @@ import { requireUser } from '@/lib/session'
 import { getGroup, getGroupFeed } from '@/lib/groups'
 import { CATEGORY_BY_KEY, categoryLabel } from '@/lib/categories'
 import ReactionBar from '@/components/ReactionBar'
+import HighlightMedia from '@/components/HighlightMedia'
 import GroupActions from '@/components/GroupActions'
 
 function fmt(d: string) {
@@ -51,6 +52,7 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
                   <span className="text-gray-400 text-xs">· {fmt(h.createdAt)}</span>
                 </div>
                 <p className="text-gray-700 whitespace-pre-wrap mb-3">{h.text}</p>
+                <HighlightMedia photoUrl={h.photoUrl} videoUrl={h.videoUrl} />
                 <ReactionBar highlightId={h.id} counts={h.counts} mine={h.mine} />
               </div>
             )

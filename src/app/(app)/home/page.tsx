@@ -4,6 +4,7 @@ import { getHomeData } from '@/lib/highlights'
 import { CATEGORY_BY_KEY, categoryLabel } from '@/lib/categories'
 import { computeBadges, earnedCount } from '@/lib/badges'
 import HighlightComposer from '@/components/HighlightComposer'
+import HighlightMedia from '@/components/HighlightMedia'
 
 function fmtTime(d: Date) {
   return new Date(d).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
@@ -81,7 +82,7 @@ export default async function HomePage() {
           <h3 className="text-gray-800 font-black mb-3">Today&apos;s HYghLights</h3>
           <div className="space-y-3">
             {todays.map((h) => (
-              <HighlightCard key={h.id} category={h.category} text={h.text} when={h.createdAt} />
+              <HighlightCard key={h.id} category={h.category} text={h.text} when={h.createdAt} photoUrl={h.photoUrl} videoUrl={h.videoUrl} />
             ))}
           </div>
         </section>
@@ -109,7 +110,7 @@ export default async function HomePage() {
           <h3 className="text-gray-800 font-black mb-3">Recent wins</h3>
           <div className="space-y-3">
             {recent.map((h) => (
-              <HighlightCard key={h.id} category={h.category} text={h.text} when={h.createdAt} />
+              <HighlightCard key={h.id} category={h.category} text={h.text} when={h.createdAt} photoUrl={h.photoUrl} videoUrl={h.videoUrl} />
             ))}
           </div>
         </section>
@@ -127,7 +128,19 @@ function Stat({ label, value }: { label: string; value: number }) {
   )
 }
 
-function HighlightCard({ category, text, when }: { category: string; text: string; when: Date }) {
+function HighlightCard({
+  category,
+  text,
+  when,
+  photoUrl,
+  videoUrl,
+}: {
+  category: string
+  text: string
+  when: Date
+  photoUrl?: string | null
+  videoUrl?: string | null
+}) {
   const c = CATEGORY_BY_KEY[category]
   return (
     <div className="bg-white border border-gray-100 rounded-2xl px-5 py-4 shadow-sm">
@@ -138,6 +151,7 @@ function HighlightCard({ category, text, when }: { category: string; text: strin
         <span className="text-gray-400 text-xs">· {fmtTime(when)}</span>
       </div>
       <p className="text-gray-700 whitespace-pre-wrap">{text}</p>
+      <HighlightMedia photoUrl={photoUrl} videoUrl={videoUrl} />
     </div>
   )
 }

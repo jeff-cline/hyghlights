@@ -100,6 +100,8 @@ export async function getGroupFeed(groupId: string, userId: string, limit = 60):
       isMine: h.userId === userId,
       category: h.category,
       text: h.text,
+      photoUrl: h.photoUrl,
+      videoUrl: h.videoUrl,
       createdAt: h.createdAt.toISOString(),
       counts,
       mine,
