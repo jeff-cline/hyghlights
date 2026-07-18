@@ -99,6 +99,19 @@ model PillarReview {
   @@index([userId, createdAt])
 }
 
+// Weekly review — end-of-week self-scores across the 6 execution areas
+// (workouts, nutrition, hydration, priorities, accomplishments, sleep).
+model WeeklyReview {
+  id        String   @id @default(cuid())
+  userId    String
+  email     String
+  scores    Json // { WORKOUTS: 8, NUTRITION: 6, ... } (0–10)
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
 // Spinning Plates — projects / follow-ups you're keeping in the air. Completed
 // plates roll up into the Master Accomplishment list.
 model Plate {
