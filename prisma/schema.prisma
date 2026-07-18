@@ -85,6 +85,39 @@ model GroupMember {
   @@index([userId])
 }
 
+// iThrive whole-person review — a snapshot of self-scores (0–10) across the
+// 8 pillars, taken weekly/monthly/quarterly/annually to measure progress.
+model PillarReview {
+  id        String   @id @default(cuid())
+  userId    String
+  email     String
+  period    String   @default("adhoc") // weekly | monthly | quarterly | annual | adhoc
+  scores    Json // { HEALTH: 7, CAREER: 6, ... } (0–10 per pillar)
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+// Spinning Plates — projects / follow-ups you're keeping in the air. Completed
+// plates roll up into the Master Accomplishment list.
+model Plate {
+  id          String    @id @default(cuid())
+  userId      String
+  email       String
+  title       String
+  category    String?
+  status      String    @default("active") // active | done
+  startDate   DateTime?
+  dueDate     DateTime?
+  completedAt DateTime?
+  notes       String?
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  @@index([userId, status])
+}
+
 // Message in a bottle 🌊 — a sentimental note of inspiration floated through the
 // ocean to a friend (by email). They open it like a message in a bottle.
 model Bottle {
