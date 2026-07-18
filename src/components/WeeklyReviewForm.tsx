@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { WEEKLY_CATEGORIES } from '@/lib/weekly'
+import { WEEKLY_CATEGORIES } from '@/lib/weekly-constants'
 
 export default function WeeklyReviewForm({ initial }: { initial: Record<string, number> }) {
   const router = useRouter()
