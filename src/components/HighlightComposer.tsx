@@ -25,12 +25,7 @@ function Celebration({ song }: { song?: string | null }) {
       ))}
       <style>{`@keyframes hy-float { to { transform: translateY(-110vh) rotate(20deg); opacity: 0; } }`}</style>
       {song && (
-        <iframe
-          title="celebration"
-          className="absolute w-0 h-0"
-          src={toEmbed(song)}
-          allow="autoplay"
-        />
+        <iframe title="celebration" className="absolute w-0 h-0" src={toEmbed(song)} allow="autoplay" />
       )}
     </div>
   )
@@ -80,16 +75,16 @@ export default function HighlightComposer({
   }
 
   return (
-    <div className="bg-[#15151a] border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl hy-rise">
-      <h2 className="text-xl md:text-2xl font-black text-white mb-1">
+    <div className="bg-white border border-gray-100 rounded-3xl p-6 md:p-8 shadow-sm hy-rise">
+      <h2 className="text-xl md:text-2xl font-black text-gray-800 mb-1">
         What were your highlights today?
       </h2>
-      <p className="text-white/50 text-sm mb-5">
+      <p className="text-gray-500 text-sm mb-5">
         {loggedToday ? 'Add another — every win counts.' : 'Capture a win, a memory, or a moment you want to remember.'}
       </p>
 
       {error && (
-        <div className="rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm font-semibold px-4 py-3 mb-4">
+        <div className="rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-semibold px-4 py-3 mb-4">
           {error}
         </div>
       )}
@@ -104,7 +99,9 @@ export default function HighlightComposer({
                 type="button"
                 onClick={() => setCategory(c.key)}
                 className={`text-sm font-bold rounded-full px-3 py-1.5 border transition-colors ${
-                  on ? 'bg-[#C9A24B] text-black border-[#C9A24B]' : 'bg-black/30 text-white/60 border-white/10 hover:border-[#34c5c5]/50'
+                  on
+                    ? 'bg-gradient-to-r from-[#E8A849] to-[#e07800] text-white border-transparent'
+                    : 'bg-[#F4F1EC] text-gray-600 border-transparent hover:text-[#0D9488] hover:bg-[#34c5c5]/10'
                 }`}
               >
                 {c.emoji} {c.label}
@@ -118,14 +115,14 @@ export default function HighlightComposer({
           onChange={(e) => setText(e.target.value)}
           rows={3}
           placeholder="Today I…"
-          className="w-full rounded-2xl bg-black/40 border border-white/15 px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#C9A24B] focus:border-transparent resize-none"
+          className="w-full rounded-2xl bg-[#F6F8FA] border border-gray-200 px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#34c5c5] focus:border-transparent resize-none"
         />
 
         <div className="flex justify-end mt-4">
           <button
             type="submit"
             disabled={submitting || !text.trim()}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#C9A24B] to-[#b8860b] text-black font-black px-7 py-3 rounded-full shadow-lg hover:scale-[1.02] transition-transform disabled:opacity-40 disabled:hover:scale-100"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-[#E8A849] to-[#e07800] text-white font-black px-7 py-3 rounded-full shadow-lg hover:scale-[1.02] transition-transform disabled:opacity-40 disabled:hover:scale-100"
           >
             {submitting ? 'Saving…' : 'Celebrate it 🎉'}
           </button>

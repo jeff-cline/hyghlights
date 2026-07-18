@@ -1,18 +1,11 @@
 @import "tailwindcss";
 
-/* HYghLights command palette:
-   black command foundation · matte gold achievement accent · teal secondary */
-:root {
-  --hy-black: #0b0b0d;
-  --hy-panel: #15151a;
-  --hy-gold: #C9A24B;
-  --hy-teal: #34c5c5;
-  --hy-ink: #ededed;
-}
-
+/* HYghLights matches the Beyond Limits palette:
+   teal #34c5c5 / deep teal #0D9488 · gold #E8A849 → orange #e07800 ·
+   warm light backgrounds (#F6F8FA / #F4F1EC) on white. */
 body {
-  background: var(--hy-black);
-  color: var(--hy-ink);
+  background: #ffffff;
+  color: #1f2937; /* slate-800, never pure black */
   font-family: var(--font-sans), system-ui, Arial, sans-serif;
 }
 

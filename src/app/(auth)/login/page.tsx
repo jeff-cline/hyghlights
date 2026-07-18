@@ -31,46 +31,46 @@ function LoginForm() {
     <div className="w-full max-w-md">
       <div className="text-center mb-8">
         <Link href="/" className="inline-block text-2xl font-black tracking-tight">
-          <span className="text-[#ededed]">HYgh</span><span className="text-[#C9A24B]">Lights</span>
+          <span className="text-gray-800">HYgh</span><span className="text-[#e07800]">Lights</span>
         </Link>
-        <p className="mt-2 text-white/50">Welcome back. Time to celebrate your wins.</p>
+        <p className="mt-2 text-gray-500">Welcome back. Time to celebrate your wins.</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-[#15151a] rounded-3xl border border-white/10 p-8 space-y-5 shadow-2xl">
+      <form onSubmit={handleSubmit} className="bg-white rounded-3xl border border-gray-100 p-8 space-y-5 shadow-sm">
         {error && (
-          <div className="rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm font-semibold px-4 py-3">
+          <div className="rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-semibold px-4 py-3">
             {error}
           </div>
         )}
         <div>
-          <label htmlFor="email" className="block text-sm font-bold text-white/70 mb-1.5">Email</label>
+          <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-1.5">Email</label>
           <input
             id="email" type="email" required autoComplete="email"
             value={email} onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-xl bg-black/40 border border-white/15 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#C9A24B] focus:border-transparent"
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#34c5c5] focus:border-transparent"
           />
         </div>
         <div>
-          <label htmlFor="password" className="block text-sm font-bold text-white/70 mb-1.5">Password</label>
+          <label htmlFor="password" className="block text-sm font-bold text-gray-700 mb-1.5">Password</label>
           <input
             id="password" type="password" required autoComplete="current-password"
             value={password} onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-xl bg-black/40 border border-white/15 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#C9A24B] focus:border-transparent"
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#34c5c5] focus:border-transparent"
           />
         </div>
         <button
           type="submit" disabled={submitting}
-          className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#C9A24B] to-[#b8860b] text-black font-black px-8 py-3.5 rounded-full shadow-lg hover:scale-[1.02] transition-transform disabled:opacity-60"
+          className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#E8A849] to-[#e07800] text-white font-black px-8 py-3.5 rounded-full shadow-lg hover:scale-[1.02] transition-transform disabled:opacity-60"
         >
           {submitting ? 'Signing in…' : 'Sign in'}
         </button>
-        <p className="text-center text-sm text-white/40">
+        <p className="text-center text-sm text-gray-400">
           Your Beyond Limits login works here too.
         </p>
       </form>
 
-      <p className="text-center text-white/40 text-sm mt-6">
-        New here? <Link href="/signup" className="text-[#34c5c5] font-bold hover:underline">Create your account</Link>
+      <p className="text-center text-gray-400 text-sm mt-6">
+        New here? <Link href="/signup" className="text-[#0D9488] font-bold hover:underline">Create your account</Link>
       </p>
     </div>
   )
@@ -78,7 +78,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#15151a] via-[#0b0b0d] to-black flex items-center justify-center px-4 py-16">
+    <main className="min-h-screen bg-gradient-to-b from-[#34c5c5]/10 via-[#F6F8FA] to-white flex items-center justify-center px-4 py-16">
       <Suspense fallback={null}>
         <LoginForm />
       </Suspense>

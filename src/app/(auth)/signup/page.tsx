@@ -32,30 +32,30 @@ export default function SignupPage() {
   }
 
   const field =
-    'w-full rounded-xl bg-black/40 border border-white/15 px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-[#C9A24B] focus:border-transparent'
+    'w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#34c5c5] focus:border-transparent'
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#15151a] via-[#0b0b0d] to-black flex items-center justify-center px-4 py-16">
+    <main className="min-h-screen bg-gradient-to-b from-[#34c5c5]/10 via-[#F6F8FA] to-white flex items-center justify-center px-4 py-16">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block text-2xl font-black tracking-tight">
-            <span className="text-[#ededed]">HYgh</span><span className="text-[#C9A24B]">Lights</span>
+            <span className="text-gray-800">HYgh</span><span className="text-[#e07800]">Lights</span>
           </Link>
-          <p className="mt-2 text-white/50">Start capturing your wins.</p>
+          <p className="mt-2 text-gray-500">Start capturing your wins.</p>
         </div>
-        <form onSubmit={handleSubmit} className="bg-[#15151a] rounded-3xl border border-white/10 p-8 space-y-5 shadow-2xl">
+        <form onSubmit={handleSubmit} className="bg-white rounded-3xl border border-gray-100 p-8 space-y-5 shadow-sm">
           {error && (
-            <div className="rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm font-semibold px-4 py-3">{error}</div>
+            <div className="rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-semibold px-4 py-3">{error}</div>
           )}
           <input className={field} type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} />
           <input className={field} type="email" required placeholder="Email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <input className={field} type="password" required placeholder="Password (min 8)" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <button type="submit" disabled={submitting} className="w-full bg-gradient-to-r from-[#C9A24B] to-[#b8860b] text-black font-black px-8 py-3.5 rounded-full shadow-lg hover:scale-[1.02] transition-transform disabled:opacity-60">
+          <button type="submit" disabled={submitting} className="w-full bg-gradient-to-r from-[#E8A849] to-[#e07800] text-white font-black px-8 py-3.5 rounded-full shadow-lg hover:scale-[1.02] transition-transform disabled:opacity-60">
             {submitting ? 'Creating…' : 'Create account'}
           </button>
         </form>
-        <p className="text-center text-white/40 text-sm mt-6">
-          Already have an account? <Link href="/login" className="text-[#34c5c5] font-bold hover:underline">Sign in</Link>
+        <p className="text-center text-gray-400 text-sm mt-6">
+          Already have an account? <Link href="/login" className="text-[#0D9488] font-bold hover:underline">Sign in</Link>
         </p>
       </div>
     </main>

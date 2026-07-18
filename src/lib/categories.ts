@@ -18,14 +18,14 @@ export type Category = {
 }
 
 export const CATEGORIES: Category[] = [
-  { key: 'HEALTH_FITNESS', label: 'Health & Fitness', emoji: '💪', color: '#C9A24B' },
-  { key: 'CAREER_BUSINESS', label: 'Career & Business', emoji: '🚀', color: '#34c5c5' },
-  { key: 'FINANCES', label: 'Finances', emoji: '💰', color: '#C9A24B' },
-  { key: 'RELATIONSHIPS', label: 'Relationships', emoji: '❤️', color: '#34c5c5' },
-  { key: 'PERSONAL_DEVELOPMENT', label: 'Personal Development', emoji: '🌱', color: '#C9A24B' },
-  { key: 'FAITH', label: 'Faith', emoji: '🙏', color: '#34c5c5' },
-  { key: 'SOCIAL_LEISURE', label: 'Social & Leisure', emoji: '🎉', color: '#C9A24B' },
-  { key: 'QUALITY_REPUTATION', label: 'Quality of Life & Reputation', emoji: '✨', color: '#34c5c5' },
+  { key: 'HEALTH_FITNESS', label: 'Health & Fitness', emoji: '💪', color: '#e07800' },
+  { key: 'CAREER_BUSINESS', label: 'Career & Business', emoji: '🚀', color: '#0D9488' },
+  { key: 'FINANCES', label: 'Finances', emoji: '💰', color: '#e07800' },
+  { key: 'RELATIONSHIPS', label: 'Relationships', emoji: '❤️', color: '#0D9488' },
+  { key: 'PERSONAL_DEVELOPMENT', label: 'Personal Development', emoji: '🌱', color: '#e07800' },
+  { key: 'FAITH', label: 'Faith', emoji: '🙏', color: '#0D9488' },
+  { key: 'SOCIAL_LEISURE', label: 'Social & Leisure', emoji: '🎉', color: '#e07800' },
+  { key: 'QUALITY_REPUTATION', label: 'Quality of Life & Reputation', emoji: '✨', color: '#0D9488' },
 ]
 
 export const CATEGORY_BY_KEY: Record<string, Category> = Object.fromEntries(
