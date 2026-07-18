@@ -19,6 +19,9 @@ export default async function HomePage() {
     user.email,
   )
 
+  // First-timers do the peace-place ritual before anything else. 🧘‍♀️
+  if (!profile.onboardedAt) redirect('/onboarding')
+
   const name = profile.displayName || user.email.split('@')[0]
   const badges = computeBadges({
     currentStreak: profile.currentStreak,

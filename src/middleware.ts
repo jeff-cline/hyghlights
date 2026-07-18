@@ -22,6 +22,7 @@ export const config = {
     '/onboarding/:path*',
     '/jar/:path*',
     '/groups/:path*',
+    '/bottles/:path*',
     '/settings/:path*',
   ],
 }

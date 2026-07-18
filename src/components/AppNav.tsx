@@ -10,6 +10,7 @@ const LINKS = [
   { href: '/jar', label: 'The Jar' },
   { href: '/recap', label: 'Recap' },
   { href: '/groups', label: 'Groups' },
+  { href: '/bottles', label: 'Ocean 🌊' },
   { href: '/settings', label: 'Settings' },
 ]
 

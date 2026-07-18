@@ -84,3 +84,20 @@ model GroupMember {
   @@unique([groupId, userId])
   @@index([userId])
 }
+
+// Message in a bottle 🌊 — a sentimental note of inspiration floated through the
+// ocean to a friend (by email). They open it like a message in a bottle.
+model Bottle {
+  id         String    @id @default(cuid())
+  fromUserId String
+  fromEmail  String
+  fromName   String?
+  toEmail    String
+  message    String
+  photoUrl   String?
+  openedAt   DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([toEmail])
+  @@index([fromUserId])
+}

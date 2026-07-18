@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { CATEGORIES } from '@/lib/categories'
 
 function Celebration({ song }: { song?: string | null }) {
-  const balloons = ['🎈', '🎉', '🙌', '⭐', '💛', '🎊', '🥳', '✨']
+  const balloons = ['🎈', '🎉', '🙌', '💃', '💛', '🌹', '🔥', '✨', '🥳', '💪']
   return (
     <div className="fixed inset-0 z-50 pointer-events-none overflow-hidden">
       {Array.from({ length: 24 }).map((_, i) => (
