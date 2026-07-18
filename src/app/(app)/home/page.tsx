@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { requireUser } from '@/lib/session'
 import { getHomeData } from '@/lib/highlights'
 import { CATEGORY_BY_KEY, categoryLabel } from '@/lib/categories'
+import { computeBadges, earnedCount } from '@/lib/badges'
 import HighlightComposer from '@/components/HighlightComposer'
 
 function fmtTime(d: Date) {
@@ -18,6 +19,12 @@ export default async function HomePage() {
   )
 
   const name = profile.displayName || user.email.split('@')[0]
+  const badges = computeBadges({
+    currentStreak: profile.currentStreak,
+    longestStreak: profile.longestStreak,
+    total,
+    distinctCategories: Object.keys(categoryCounts).length,
+  })
 
   return (
     <main className="max-w-3xl mx-auto px-4 py-10">
@@ -41,6 +48,29 @@ export default async function HomePage() {
         <Stat label="Best streak" value={profile.longestStreak} />
         <Stat label="Today" value={todays.length} />
       </div>
+
+      {/* Badges */}
+      <section className="mb-8">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-gray-800 font-black">Badges</h3>
+          <span className="text-xs font-bold text-[#0D9488]">{earnedCount(badges)}/{badges.length} earned</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {badges.map((b) => (
+            <span
+              key={b.key}
+              title={b.hint}
+              className={`text-sm font-bold rounded-full px-3 py-1.5 border ${
+                b.earned
+                  ? 'bg-gradient-to-r from-[#E8A849]/15 to-[#e07800]/10 border-[#E8A849]/40 text-gray-800'
+                  : 'bg-white border-gray-100 text-gray-300'
+              }`}
+            >
+              <span className={b.earned ? '' : 'grayscale opacity-50'}>{b.emoji}</span> {b.label}
+            </span>
+          ))}
+        </div>
+      </section>
 
       {/* Composer */}
       <HighlightComposer loggedToday={loggedToday} celebrationSong={profile.celebrationSong} />
