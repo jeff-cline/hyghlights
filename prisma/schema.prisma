@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// HYghLights owns its OWN database for community/highlights data. Accounts are
+// SHARED with Beyond Limits: auth verifies against that shared `User` table via
+// src/lib/identity.ts (a separate connection), so the same email + password
+// works on both. Rows here reference the shared account by `userId` + `email`
+// (no cross-database foreign key).
+
+// One row per member — their ritual settings + streak state.
+model Profile {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  email           String
+  displayName     String?
+  peacePlace      String? // where they reflect (nature, the ocean, a closet…)
+  celebrationSong String? // a YouTube link that plays when they celebrate
+  onboardedAt     DateTime?
+  currentStreak   Int       @default(0)
+  longestStreak   Int       @default(0)
+  lastEntryDate   DateTime? // the day (UTC midnight) of their most recent highlight
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt @default(now())
+
+  @@index([email])
+}
+
+// A single highlight / celebration / memory, filed to a day and a life category.
+model Highlight {
+  id        String   @id @default(cuid())
+  userId    String
+  email     String
+  entryDate DateTime // the day this highlight is "for" (UTC midnight)
+  category  String // one of the 8 life categories — see src/lib/categories.ts
+  text      String
+  photoUrl  String?
+  videoUrl  String?
+  createdAt DateTime @default(now())
+
+  reactions Reaction[]
+
+  @@index([userId, entryDate])
+  @@index([category])
+}
+
+// Celebrate each other: high-fives, balloons, dance parties.
+model Reaction {
+  id          String    @id @default(cuid())
+  highlightId String
+  highlight   Highlight @relation(fields: [highlightId], references: [id], onDelete: Cascade)
+  fromUserId  String
+  fromEmail   String
+  type        String // HIGHFIVE | BALLOON | DANCEPARTY
+  createdAt   DateTime  @default(now())
+
+  @@unique([highlightId, fromUserId, type])
+  @@index([highlightId])
+}
+
+// Small groups / networks of family, friends, or business partners.
+model Group {
+  id         String        @id @default(cuid())
+  name       String
+  ownerId    String
+  inviteCode String        @unique
+  createdAt  DateTime      @default(now())
+  members    GroupMember[]
+}
+
+model GroupMember {
+  id       String   @id @default(cuid())
+  groupId  String
+  group    Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId   String
+  email    String
+  joinedAt DateTime @default(now())
+
+  @@unique([groupId, userId])
+  @@index([userId])
+}
