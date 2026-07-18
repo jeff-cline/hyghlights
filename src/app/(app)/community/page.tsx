@@ -23,7 +23,7 @@ export default async function CommunityPage() {
 
       {feed.length === 0 ? (
         <div className="bg-white border border-gray-100 rounded-3xl shadow-sm p-8 text-center text-gray-500">
-          No highlights yet — be the first to share a win.
+          No HYghLights yet — be the first to share a win.
         </div>
       ) : (
         <div className="space-y-4">

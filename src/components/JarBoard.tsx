@@ -37,7 +37,7 @@ export default function JarBoard({ monthLabel, initial }: { monthLabel: string; 
         <h3 className="font-black text-gray-800 mb-3">Drag {monthLabel} into the jar</h3>
         {loose.length === 0 ? (
           <p className="text-gray-400 text-sm bg-white border border-gray-100 rounded-2xl p-5 text-center">
-            All tucked in 🫙 — every highlight is in the jar.
+            All tucked in 🫙 — every HYghLight is in the jar.
           </p>
         ) : (
           <div className="space-y-2">
@@ -75,7 +75,7 @@ export default function JarBoard({ monthLabel, initial }: { monthLabel: string; 
       >
         <div className={`text-7xl transition-transform ${pop ? 'scale-125' : ''}`}>🫙</div>
         <div className="font-black text-gray-800 mt-2">{jarred.length} inside</div>
-        <p className="text-gray-400 text-xs mb-4">Drop a highlight here to keep it forever.</p>
+        <p className="text-gray-400 text-xs mb-4">Drop a HYghLight here to keep it forever.</p>
         {jarred.length > 0 && (
           <div className="flex flex-wrap justify-center gap-2">
             {jarred.map((c) => {

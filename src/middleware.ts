@@ -18,6 +18,7 @@ export const config = {
   matcher: [
     '/home/:path*',
     '/community/:path*',
+    '/recap/:path*',
     '/onboarding/:path*',
     '/jar/:path*',
     '/groups/:path*',

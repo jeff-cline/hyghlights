@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   const json = await req.json().catch(() => null)
   const parsed = bodySchema.safeParse(json)
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Pick a category and write your highlight.' }, { status: 400 })
+    return NextResponse.json({ error: 'Pick a category and write your HYghLight.' }, { status: 400 })
   }
 
   const result = await addHighlight(user.userId, user.email, parsed.data)

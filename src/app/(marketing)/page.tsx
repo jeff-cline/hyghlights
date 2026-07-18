@@ -32,7 +32,7 @@ export default function Landing() {
         </h1>
         <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10">
           HYghLights is your daily practice for capturing wins, honoring progress, and living a life
-          you don&apos;t need to vacation from. What were your highlights today?
+          you don&apos;t need to vacation from. What were your HYghLights today?
         </p>
         <div className="flex items-center justify-center gap-4">
           <Link href="/login" className="bg-gradient-to-r from-[#E8A849] to-[#e07800] text-white font-black px-8 py-3.5 rounded-full hover:scale-105 transition-transform shadow-lg">

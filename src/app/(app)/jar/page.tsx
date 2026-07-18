@@ -39,7 +39,7 @@ export default async function JarPage({ searchParams }: { searchParams: Promise<
     <main className="max-w-4xl mx-auto px-4 py-10">
       <h1 className="text-2xl md:text-3xl font-black text-gray-800 mb-1">The Jar</h1>
       <p className="text-gray-500 mb-6">
-        A jar for every month. Drag your highlights in — watch {year} fill up.
+        A jar for every month. Drag your HYghLights in — watch {year} fill up.
       </p>
 
       {/* Month strip */}
@@ -65,7 +65,7 @@ export default async function JarPage({ searchParams }: { searchParams: Promise<
 
       {monthCards.length === 0 ? (
         <div className="bg-white border border-gray-100 rounded-3xl shadow-sm p-10 text-center text-gray-500">
-          No highlights in {FULL[selected]} yet. Capture one on the{' '}
+          No HYghLights in {FULL[selected]} yet. Capture one on the{' '}
           <Link href="/home" className="text-[#0D9488] font-bold hover:underline">Today</Link> page.
         </div>
       ) : (

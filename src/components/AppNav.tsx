@@ -8,6 +8,7 @@ const LINKS = [
   { href: '/home', label: 'Today' },
   { href: '/community', label: 'Community' },
   { href: '/jar', label: 'The Jar' },
+  { href: '/recap', label: 'Recap' },
   { href: '/groups', label: 'Groups' },
   { href: '/settings', label: 'Settings' },
 ]
