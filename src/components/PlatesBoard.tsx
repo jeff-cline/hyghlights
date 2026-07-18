@@ -28,11 +28,16 @@ export default function PlatesBoard({ active, done }: { active: Plate[]; done: P
     e.preventDefault()
     if (!title.trim()) return
     setAdding(true)
-    await fetch('/api/plates', {
+    const res = await fetch('/api/plates', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title: title.trim(), dueDate: due || null, notes: notes || null }),
     })
+    const b = await res.json().catch(() => ({}))
+    if (res.ok && b.plate?.id) {
+      // Optimistically show it at the top so it appears instantly.
+      setList((l) => [{ id: b.plate.id, title: title.trim(), dueDate: due || null, completedAt: null, notes: notes || null }, ...l])
+    }
     setTitle(''); setDue(''); setNotes(''); setAdding(false)
     router.refresh()
   }
