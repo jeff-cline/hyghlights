@@ -5,21 +5,26 @@ import { getLatestReview, getHistory, overallScore, type Scores } from '@/lib/th
 import { getPlates } from '@/lib/plates'
 import { PILLARS } from '@/lib/pillars'
 import { getLatestWeekly, getWeeklyHistory, weeklyOverall, recommendations, WEEKLY_CATEGORIES, type WScores } from '@/lib/weekly'
+import { getMyAssessments } from '@/lib/assessments'
 import PillarReviewForm from '@/components/PillarReviewForm'
 import WeeklyReviewForm from '@/components/WeeklyReviewForm'
 import PlatesBoard from '@/components/PlatesBoard'
+import AssessmentsHub from '@/components/AssessmentsHub'
 
 const TABS = [
   { key: 'pillars', label: 'Whole-Person' },
   { key: 'weekly', label: 'Weekly Review' },
   { key: 'plates', label: 'Spinning Plates' },
+  { key: 'assess', label: 'Assessments' },
 ]
+
+const VALID = ['pillars', 'weekly', 'plates', 'assess']
 
 export default async function ThrivePage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
   const user = await requireUser()
   if (!user) redirect('/login')
   const sp = await searchParams
-  const tab = sp.tab === 'plates' ? 'plates' : sp.tab === 'weekly' ? 'weekly' : 'pillars'
+  const tab = VALID.includes(sp.tab ?? '') ? (sp.tab as string) : 'pillars'
 
   return (
     <main className="max-w-2xl mx-auto px-4 py-10">
@@ -42,9 +47,17 @@ export default async function ThrivePage({ searchParams }: { searchParams: Promi
         ))}
       </div>
 
-      {tab === 'pillars' ? <Pillars userId={user.userId} /> : tab === 'weekly' ? <Weekly userId={user.userId} /> : <Plates userId={user.userId} />}
+      {tab === 'pillars' ? <Pillars userId={user.userId} />
+        : tab === 'weekly' ? <Weekly userId={user.userId} />
+        : tab === 'assess' ? <Assess userId={user.userId} />
+        : <Plates userId={user.userId} />}
     </main>
   )
+}
+
+async function Assess({ userId }: { userId: string }) {
+  const done = await getMyAssessments(userId)
+  return <AssessmentsHub done={done} />
 }
 
 async function Weekly({ userId }: { userId: string }) {

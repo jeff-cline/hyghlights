@@ -99,6 +99,22 @@ model PillarReview {
   @@index([userId, createdAt])
 }
 
+// Self-assessment results (communication, love language, leadership, …). One
+// current result per quiz per member; retaking updates it.
+model Assessment {
+  id          String   @id @default(cuid())
+  userId      String
+  email       String
+  quizKey     String
+  resultKey   String
+  resultLabel String
+  completedAt DateTime @default(now())
+
+  @@unique([userId, quizKey])
+  @@index([userId])
+  @@index([quizKey])
+}
+
 // Weekly review — end-of-week self-scores across the 6 execution areas
 // (workouts, nutrition, hydration, priorities, accomplishments, sleep).
 model WeeklyReview {
