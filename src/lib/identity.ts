@@ -63,3 +63,28 @@ export async function createIdentity(email: string, name: string | null, passwor
   const u = rows[0]
   return { id: u.id, email: u.email, name: u.name, role: u.role, isActive: u.isActive, mustChangePassword: u.mustChangePassword }
 }
+
+/**
+ * Set a new password on the shared account.
+ *
+ * Writes to the same `User` row both products authenticate against, which is
+ * the whole point: a reset started on HYghLights changes the password on
+ * Beyond Limits too, because there was only ever one password.
+ *
+ * Also clears `mustChangePassword` — somebody who just chose a password has
+ * done the thing that flag was asking for, and being made to choose again on
+ * the next screen reads as the reset having failed.
+ *
+ * Returns false when no such account exists, so the caller can stay quiet
+ * about it rather than confirming which addresses are registered.
+ */
+export async function setIdentityPassword(email: string, password: string): Promise<boolean> {
+  const clean = email.toLowerCase().trim()
+  const hash = await bcrypt.hash(password, 12)
+  const { rowCount } = await pool.query(
+    `UPDATE "User" SET "passwordHash" = $2, "mustChangePassword" = false
+      WHERE email = $1 AND "isActive" = true`,
+    [clean, hash],
+  )
+  return (rowCount ?? 0) > 0
+}

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { findIdentity, createIdentity } from '@/lib/identity'
+import { guardForm } from "@/lib/form-guard";
 
 const schema = z.object({
   email: z.string().email(),
@@ -10,6 +11,11 @@ const schema = z.object({
 
 export async function POST(req: Request) {
   const json = await req.json().catch(() => null)
+  const gate = await guardForm(req, "signup", (json ?? {}) as Record<string, unknown>, {
+    names: [(json as Record<string, unknown> | null)?.name as string | undefined],
+    email: (json as Record<string, unknown> | null)?.email as string | undefined,
+  })
+  if (gate.blocked) return gate.response
   const parsed = schema.safeParse(json)
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? 'Invalid input.' }, { status: 400 })

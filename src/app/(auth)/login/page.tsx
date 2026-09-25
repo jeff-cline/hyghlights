@@ -21,7 +21,10 @@ function LoginForm() {
     const result = await signIn('credentials', { email, password, redirect: false, callbackUrl })
     setSubmitting(false)
     if (!result || result.error) {
-      setError('Invalid email or password.')
+      setError(
+        'That email and password did not match. If your browser filled it in, ' +
+        'the saved one may be out of date — try typing it, or reset it below.',
+      )
       return
     }
     window.location.assign(result.url ?? callbackUrl)
@@ -51,7 +54,12 @@ function LoginForm() {
           />
         </div>
         <div>
-          <label htmlFor="password" className="block text-sm font-bold text-gray-700 mb-1.5">Password</label>
+          <div className="flex items-baseline justify-between mb-1.5">
+            <label htmlFor="password" className="block text-sm font-bold text-gray-700">Password</label>
+            <Link href="/forgot" className="text-xs font-bold text-[#0D9488] hover:underline">
+              Forgot it?
+            </Link>
+          </div>
           <input
             id="password" type="password" required autoComplete="current-password"
             value={password} onChange={(e) => setPassword(e.target.value)}
@@ -65,7 +73,11 @@ function LoginForm() {
           {submitting ? 'Signing in…' : 'Sign in'}
         </button>
         <p className="text-center text-sm text-gray-400">
-          Your Beyond Limits login works here too.
+          One account for HYghLights and Beyond Limits Bootcamp —{' '}
+          <Link href="/forgot" className="font-bold text-[#0D9488] hover:underline">
+            reset it
+          </Link>{' '}
+          and the new password works on both.
         </p>
       </form>
 
