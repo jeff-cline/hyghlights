@@ -104,16 +104,18 @@ DELETES=$(rsync -azn --delete "${RSYNC_EXCLUDES[@]}" --itemize-changes ./ $HOST:
 if [ -n "$DELETES" ]; then
   echo "$DELETES" | sed 's/^/  /'
   echo
-  # Read from the terminal, not stdin. The rsync above runs over ssh, which
-  # swallows stdin — so a piped answer never reaches this prompt and the deploy
-  # aborts looking like the guard tripped. No terminal (CI, a background run)
-  # means nobody is there to confirm, so it stays aborted.
-  if [ -r /dev/tty ]; then
-    read -r -p "  These server files will be DELETED. Type 'yes' to continue: " ok < /dev/tty
+  # Read from the terminal, not stdin: the rsync above runs over ssh, and ssh
+  # swallows stdin, so a piped answer never reaches this prompt. `ok` is
+  # initialised first because `set -u` turns a failed read into "unbound
+  # variable" rather than the clear refusal below — and testing -r /dev/tty is
+  # not enough, since the path can exist and still not be open-able (a
+  # backgrounded run: "Device not configured").
+  ok=""
+  if [ -c /dev/tty ] && read -r -p "  These server files will be DELETED. Type 'yes' to continue: " ok < /dev/tty 2>/dev/null; then
+    [ "$ok" = "yes" ] || die "aborted - nothing changed"
   else
-    die "would delete server files and there is no terminal to confirm on - nothing changed"
+    die "would delete server files and no terminal is available to confirm on - nothing changed"
   fi
-  [ "$ok" = "yes" ] || die "aborted - nothing changed"
 fi
 
 rsync -az --delete $DRY "${RSYNC_EXCLUDES[@]}" \
