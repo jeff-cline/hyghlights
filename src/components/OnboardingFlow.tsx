@@ -1,6 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import {
+  PEACE_PLACES, MAX_PEACE_PLACES, formatPeacePlaces,
+} from '@/lib/peace-places'
 
 const ITHRIVE = [
   ['I', 'I Am Unstoppable', '💪'],
@@ -12,19 +15,14 @@ const ITHRIVE = [
   ['E', 'Execute with Excellence', '🌹'],
 ]
 
-const PEACE_PLACES = [
-  { emoji: '🏝️', label: 'The beach' },
-  { emoji: '🌊', label: 'By the ocean' },
-  { emoji: '☀️', label: 'At sunrise' },
-  { emoji: '🔥', label: 'A bonfire' },
-  { emoji: '🌹', label: 'In the garden' },
-  { emoji: '🧘‍♀️', label: 'A quiet corner' },
-]
 
 export default function OnboardingFlow({ initialName }: { initialName: string }) {
   const [step, setStep] = useState(0)
   const [name, setName] = useState(initialName)
-  const [peacePlace, setPeacePlace] = useState('')
+  // A list now. One peace place was never really true — morning coffee and the
+  // drive home are both somewhere you reflect, and making people rank them
+  // just loses the information.
+  const [places, setPlaces] = useState<string[]>([])
   const [customPlace, setCustomPlace] = useState('')
   const [song, setSong] = useState('')
   const [saving, setSaving] = useState(false)
@@ -41,7 +39,7 @@ export default function OnboardingFlow({ initialName }: { initialName: string })
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         displayName: name.trim() || undefined,
-        peacePlace: (customPlace.trim() || peacePlace) || undefined,
+        peacePlace: formatPeacePlaces([...places, customPlace]) || undefined,
         celebrationSong: song.trim() || undefined,
         markOnboarded: true,
       }),
@@ -82,27 +80,67 @@ export default function OnboardingFlow({ initialName }: { initialName: string })
 
       {step === 2 && (
         <div>
-          <h2 className="text-2xl font-black text-gray-800 mb-2">Find your peace place 🧘‍♀️</h2>
-          <p className="text-gray-500 mb-5">Where you&apos;ll sit and reflect — a space to celebrate and honor, just for you. No one else.</p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+          <h2 className="text-2xl font-black text-gray-800 mb-2">Find your peace places 🧘</h2>
+          <p className="text-gray-500 mb-1">
+            Where you&apos;ll sit and reflect — a space to celebrate and honor, just for you. No one else.
+          </p>
+          <p className="mb-5 text-sm text-gray-400">
+            Pick as many as ring true, up to {MAX_PEACE_PLACES}. Most people have a few.
+          </p>
+
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {PEACE_PLACES.map((p) => {
-              const on = peacePlace === p.label && !customPlace
+              const on = places.includes(p.label)
+              // Full is not the same as unavailable: what is already chosen must
+              // stay clickable, or the only way out of five is a page reload.
+              const blocked = !on && places.length >= MAX_PEACE_PLACES
               return (
                 <button
                   key={p.label}
                   type="button"
-                  onClick={() => { setPeacePlace(p.label); setCustomPlace('') }}
-                  className={`rounded-2xl px-4 py-5 border text-center transition-colors ${
-                    on ? 'border-[#e07800] bg-[#E8A849]/10' : 'border-gray-200 bg-white hover:border-[#34c5c5]/40'
+                  aria-pressed={on}
+                  disabled={blocked}
+                  onClick={() =>
+                    setPlaces((cur) =>
+                      cur.includes(p.label)
+                        ? cur.filter((x) => x !== p.label)
+                        : cur.length >= MAX_PEACE_PLACES ? cur : [...cur, p.label])
+                  }
+                  className={`relative rounded-2xl border px-3 py-5 text-center transition-colors ${
+                    on
+                      ? 'border-[#e07800] bg-[#E8A849]/10'
+                      : blocked
+                        ? 'cursor-not-allowed border-gray-100 bg-gray-50 opacity-45'
+                        : 'border-gray-200 bg-white hover:border-[#34c5c5]/40'
                   }`}
                 >
-                  <div className="text-3xl mb-1">{p.emoji}</div>
+                  {on && (
+                    <span aria-hidden="true"
+                          className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#e07800] text-xs font-black text-white">
+                      ✓
+                    </span>
+                  )}
+                  <div className="mb-1 text-3xl">{p.emoji}</div>
                   <div className="text-sm font-bold text-gray-700">{p.label}</div>
                 </button>
               )
             })}
           </div>
-          <input className={field} value={customPlace} onChange={(e) => setCustomPlace(e.target.value)} placeholder="…or somewhere else that speaks to you" />
+
+          <p className="mt-4 text-sm font-bold text-gray-500" aria-live="polite">
+            {places.length === 0
+              ? `Choose up to ${MAX_PEACE_PLACES}`
+              : places.length >= MAX_PEACE_PLACES
+                ? `${places.length} of ${MAX_PEACE_PLACES} — that’s the lot. Tap one to swap it out.`
+                : `${places.length} of ${MAX_PEACE_PLACES} chosen`}
+          </p>
+
+          <input className={`${field} mt-3`} value={customPlace}
+                 onChange={(e) => setCustomPlace(e.target.value)}
+                 placeholder="…or somewhere else that speaks to you" />
+          <p className="mt-1.5 text-xs text-gray-400">
+            Anything you type here counts as one of your {MAX_PEACE_PLACES}.
+          </p>
           <div className="flex justify-end mt-6">
             <button className={primary} onClick={() => setStep(3)}>Next</button>
           </div>
