@@ -40,7 +40,10 @@ export const PEACE_PLACES: PeacePlace[] = [
   { emoji: '✍️', label: 'Journalling at the table' },
   { emoji: '🛏️', label: 'Just before sleep' },
   { emoji: '⛪', label: 'Somewhere sacred' },
+  { emoji: '💎', label: 'With my crystals' },
   { emoji: '💪', label: 'Mid-workout' },
+  { emoji: '💯', label: 'Right after a win' },
+  { emoji: '🚀', label: 'Dreaming something up' },
 ]
 
 /** How many they may hold at once. */
