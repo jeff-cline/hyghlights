@@ -3,10 +3,30 @@
 /* HYghLights matches the Beyond Limits palette:
    teal #34c5c5 / deep teal #0D9488 · gold #E8A849 → orange #e07800 ·
    warm light backgrounds (#F6F8FA / #F4F1EC) on white. */
+/* Light, deliberately. There is not one `dark:` variant in the codebase and
+   every surface names its own colours, so nothing here answers a dark theme.
+   color-scheme tells the browser that too — without it, a device set to dark
+   mode paints the controls IT draws (date pickers, autofill, scrollbars) dark,
+   and dark-on-dark is the same unreadable field by a different route. */
+:root {
+  color-scheme: light;
+}
+
 body {
   background: #ffffff;
   color: #1f2937; /* slate-800, never pure black */
   font-family: var(--font-sans), system-ui, Arial, sans-serif;
+}
+
+/* A field with no colour of its own still gets a readable one. In @layer base
+   so Tailwind utilities still win — unlayered CSS beats every layered rule,
+   which would silently override any text-* class on an input. */
+@layer base {
+  input,
+  textarea,
+  select {
+    color: #1f2937;
+  }
 }
 
 @keyframes hy-rise {
