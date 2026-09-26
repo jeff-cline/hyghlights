@@ -12,6 +12,9 @@ function LoginForm() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  // No browser can be asked whether it is in a library. The person who knows is
+  // the one signing in, so they are the one asked.
+  const [publicComputer, setPublicComputer] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
 
@@ -19,7 +22,9 @@ function LoginForm() {
     e.preventDefault()
     setError(null)
     setSubmitting(true)
-    const result = await signIn('credentials', { email, password, redirect: false, callbackUrl })
+    const result = await signIn('credentials', {
+      email, password, publicComputer: String(publicComputer), redirect: false, callbackUrl,
+    })
     setSubmitting(false)
     if (!result || result.error) {
       setError(
@@ -67,6 +72,22 @@ function LoginForm() {
             className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#34c5c5] focus:border-transparent"
           />
         </div>
+        <label className="flex cursor-pointer items-start gap-3 rounded-2xl bg-[#F6F8FA] p-4">
+          <input type="checkbox" checked={publicComputer}
+                 onChange={(e) => setPublicComputer(e.target.checked)}
+                 className="mt-0.5 h-4 w-4 accent-[#0D9488]" />
+          <span className="text-xs leading-relaxed text-gray-600">
+            <span className="font-bold text-gray-800">
+              This is a shared or public computer
+            </span>
+            <span className="mt-0.5 block">
+              {publicComputer
+                ? 'You will be signed out after 8 hours.'
+                : 'Leave this unticked and you will stay signed in on this browser for 90 days.'}
+            </span>
+          </span>
+        </label>
+
         <button
           type="submit" disabled={submitting}
           className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#E8A849] to-[#e07800] text-white font-black px-8 py-3.5 rounded-full shadow-lg hover:scale-[1.02] transition-transform disabled:opacity-60"

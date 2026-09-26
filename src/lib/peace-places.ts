@@ -109,3 +109,23 @@ export function isPresetPlace(label: string): boolean {
   const key = label.trim().toLocaleLowerCase()
   return PEACE_PLACES.some((p) => p.label.toLocaleLowerCase() === key)
 }
+
+/**
+ * The icon for a stored label, or null for one they typed themselves.
+ *
+ * The card stores labels, not emoji — so the icon has to be looked back up to
+ * be drawn. Returns null rather than a generic fallback for a custom answer:
+ * inventing an icon for "my nan's kitchen" would be guessing at something
+ * personal, and the words alone are enough.
+ */
+export function emojiForPlace(label: string): string | null {
+  const key = String(label ?? '').trim().toLocaleLowerCase()
+  return PEACE_PLACES.find((p) => p.label.toLocaleLowerCase() === key)?.emoji ?? null
+}
+
+/** A stored value as icon + label pairs, ready to render. */
+export function placesWithIcons(
+  value: string | null | undefined,
+): { label: string; emoji: string | null }[] {
+  return parsePeacePlaces(value).map((label) => ({ label, emoji: emojiForPlace(label) }))
+}

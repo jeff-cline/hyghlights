@@ -5,6 +5,7 @@ import Wordmark from '@/components/Wordmark'
 import { getPublicCard } from '@/lib/card-data'
 import { cardUrl, shareText } from '@/lib/card'
 import { CATEGORY_BY_KEY, categoryLabel } from '@/lib/categories'
+import { placesWithIcons } from '@/lib/peace-places'
 import ShareRow from '@/components/ShareRow'
 
 export const dynamic = 'force-dynamic'
@@ -53,6 +54,7 @@ export default async function MyCardPage(
   if (!card) notFound()
 
   const url = cardUrl(card.slug)
+  const places = placesWithIcons(card.peacePlace)
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#34c5c5]/10 via-[#F6F8FA] to-white px-4 py-12">
@@ -118,10 +120,23 @@ export default async function MyCardPage(
               </p>
             )}
 
-            {card.peacePlace && (
-              <p className="mt-6 text-center text-sm text-gray-500">
-                Reflects: <span className="font-bold text-gray-700">{card.peacePlace}</span>
-              </p>
+            {places.length > 0 && (
+              <div className="mt-7 border-t border-gray-100 pt-6">
+                <p className="text-center text-xs font-black uppercase tracking-widest text-gray-400">
+                  Where {card.displayName.split(' ')[0]} reflects
+                </p>
+                <div className="mt-3 flex flex-wrap justify-center gap-2">
+                  {places.map((p) => (
+                    <span key={p.label}
+                          className="inline-flex items-center gap-2 rounded-full bg-[#F6F8FA] px-4 py-2 text-sm font-bold text-gray-700 ring-1 ring-gray-200">
+                      {/* No icon for a place they typed themselves — inventing one
+                          would be guessing at something personal. */}
+                      {p.emoji && <span className="text-xl" aria-hidden="true">{p.emoji}</span>}
+                      {p.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         </section>

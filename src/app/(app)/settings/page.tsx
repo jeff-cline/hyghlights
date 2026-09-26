@@ -2,11 +2,16 @@ import { redirect } from 'next/navigation'
 import { requireUser } from '@/lib/session'
 import { getOrCreateProfile } from '@/lib/highlights'
 import SettingsForm from '@/components/SettingsForm'
+import DeviceList from '@/components/DeviceList'
+import { listDevices } from '@/lib/devices'
+import { getSession } from '@/lib/session'
 
 export default async function SettingsPage() {
   const user = await requireUser()
   if (!user) redirect('/login')
   const profile = await getOrCreateProfile(user.userId, user.email)
+  const session = await getSession()
+  const devices = await listDevices(user.userId)
 
   return (
     <main className="max-w-2xl mx-auto px-4 py-10">
@@ -22,6 +27,19 @@ export default async function SettingsPage() {
           cardSlug: profile.cardSlug,
         }}
       />
+
+      <div className="mt-6">
+        <DeviceList
+          initial={devices.map((d) => ({
+            id: d.id,
+            label: d.label,
+            lastIp: d.lastIp,
+            createdAt: d.createdAt.toISOString(),
+            lastSeenAt: d.lastSeenAt.toISOString(),
+            isCurrent: d.id === session?.deviceId,
+          }))}
+        />
+      </div>
     </main>
   )
 }

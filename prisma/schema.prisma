@@ -183,3 +183,33 @@ model Bottle {
   @@index([toEmail])
   @@index([fromUserId])
 }
+
+/// A browser that has signed in and is trusted to stay signed in.
+///
+/// A ninety-day session is only responsible if it can be ended early. JWTs are
+/// stateless and cannot be revoked on their own, so every session carries the id
+/// of one of these rows and every request checks it is still live. That is one
+/// indexed read per request, and it is what buys the ability to sign out a
+/// stolen laptop from your own settings page.
+///
+/// It is also the record that makes a new sign-in noticeable: a device nobody
+/// recognises is the first sign that a password has gone astray.
+model Device {
+  id         String   @id @default(cuid())
+  userId     String
+  /// "Chrome on macOS" — parsed from the user agent, for the member to
+  /// recognise, never for fingerprinting.
+  label      String
+  /// Coarse, and shown only to the member whose device it is. Never used to
+  /// decide whether a session is valid: IP addresses change on every move
+  /// between wifi and cellular, and binding a session to one would sign people
+  /// out several times a day.
+  lastIp     String?
+  createdAt  DateTime @default(now())
+  lastSeenAt DateTime @default(now())
+  /// Set when the member signs this device out from somewhere else.
+  revokedAt  DateTime?
+
+  @@index([userId, revokedAt])
+  @@index([lastSeenAt])
+}

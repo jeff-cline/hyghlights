@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import {
   PEACE_PLACES, MAX_PEACE_PLACES, PEACE_PLACE_MAX_CHARS,
   formatPeacePlaces, parsePeacePlaces, isPresetPlace,
+  emojiForPlace, placesWithIcons,
 } from '@/lib/peace-places'
 
 describe('the menu', () => {
@@ -85,5 +86,35 @@ describe('telling a preset from something they typed', () => {
 
   it('does not claim a custom answer', () => {
     expect(isPresetPlace('My nan’s kitchen')).toBe(false)
+  })
+})
+
+// The card stores labels, not emoji, so the icon has to be looked back up to be
+// drawn on it.
+describe('icons for the card', () => {
+  it('finds the icon for a menu label', () => {
+    expect(emojiForPlace('The beach')).toBe('🏝️')
+    expect(emojiForPlace('with my crystals')).toBe('💎')
+  })
+
+  it('returns null for something they typed themselves', () => {
+    // Better no icon than a guessed one on somebody's own words.
+    expect(emojiForPlace('My nan’s kitchen')).toBeNull()
+    expect(emojiForPlace('')).toBeNull()
+  })
+
+  it('pairs a stored value into icon + label, keeping custom entries', () => {
+    expect(placesWithIcons('The beach, My nan’s kitchen')).toEqual([
+      { label: 'The beach', emoji: '🏝️' },
+      { label: 'My nan’s kitchen', emoji: null },
+    ])
+  })
+
+  it('is empty for a profile that never set one', () => {
+    expect(placesWithIcons(null)).toEqual([])
+  })
+
+  it('gives every menu option a findable icon', () => {
+    for (const p of PEACE_PLACES) expect(emojiForPlace(p.label)).toBe(p.emoji)
   })
 })
