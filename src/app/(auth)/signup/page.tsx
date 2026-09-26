@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { signIn } from 'next-auth/react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { BOOTCAMP_OFFER, SHARED_PASSWORD_NOTICE } from '@/lib/bootcamp-offer'
 import Wordmark from '@/components/Wordmark'
@@ -9,13 +10,18 @@ import Wordmark from '@/components/Wordmark'
 /** What the server said when the address already had an account. */
 type SsoNotice = { title: string; body: string }
 
-export default function SignupPage() {
-  const [email, setEmail] = useState('')
+function SignupForm() {
+  // Carried from the login screen, so somebody who discovered they have no
+  // account does not retype the address they just typed there.
+  const searchParams = useSearchParams()
+  const [email, setEmail] = useState(searchParams.get('email') ?? '')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [sso, setSso] = useState<SsoNotice | null>(null)
   const [offer, setOffer] = useState(false)
+  // Account made, but the automatic sign-in did not take.
+  const [signInFailed, setSignInFailed] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
@@ -41,8 +47,22 @@ export default function SignupPage() {
 
     // Sign them in first, so the offer is something they read on the way in
     // rather than a gate in front of the product they just joined.
-    await signIn('credentials', { email, password, redirect: false, callbackUrl: '/home' })
+    //
+    // The result is checked, which it was not before. A failure here left
+    // somebody looking at a cheerful offer screen while not actually signed in,
+    // so the next thing they clicked bounced them to the login page — being
+    // asked to log in to an account they had just created, seconds ago, with a
+    // password they had just typed. The account exists either way, so the
+    // honest move is to say so and send them to sign in once, knowingly.
+    const result = await signIn('credentials', {
+      email, password, publicComputer: 'false', redirect: false, callbackUrl: '/home',
+    })
     setSubmitting(false)
+
+    if (!result || result.error) {
+      setSignInFailed(true)
+      return
+    }
     setOffer(true)
   }
 
@@ -61,8 +81,24 @@ export default function SignupPage() {
           </p>
         </div>
 
-        {/* ── already a Beyond Limits member ─────────────────────────── */}
-        {sso ? (
+        {/* ── made the account, but could not sign them in ───────────── */}
+        {signInFailed ? (
+          <div className="rounded-3xl border border-[#E8A849]/40 bg-white p-8 shadow-sm">
+            <h1 className="text-2xl font-black leading-tight text-gray-800">
+              Your account is created.
+            </h1>
+            <p className="mt-3 text-gray-600">
+              We could not sign you in automatically — that is on us, not on you.
+              Your email and the password you just chose will work.
+            </p>
+            <Link
+              href={`/login?email=${encodeURIComponent(email)}`}
+              className="mt-6 block w-full rounded-full bg-gradient-to-r from-[#E8A849] to-[#e07800] px-8 py-3.5 text-center font-black text-white shadow-lg transition-transform hover:scale-[1.02]"
+            >
+              Sign in
+            </Link>
+          </div>
+        ) : sso ? (
           <div className="rounded-3xl border border-[#0D9488]/20 bg-white p-8 shadow-sm">
             <span className="inline-flex items-center gap-2 rounded-full bg-[#0D9488]/10 px-3 py-1 text-xs font-black uppercase tracking-widest text-[#0D9488]">
               Single sign-on
@@ -146,5 +182,13 @@ export default function SignupPage() {
         )}
       </div>
     </main>
+  )
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignupForm />
+    </Suspense>
   )
 }

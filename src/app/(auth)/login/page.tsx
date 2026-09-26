@@ -10,7 +10,9 @@ function LoginForm() {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/home'
 
-  const [email, setEmail] = useState('')
+  // Carried from signup and from the SSO welcome, so nobody retypes an
+  // address they just entered on the previous screen.
+  const [email, setEmail] = useState(searchParams.get('email') ?? '')
   const [password, setPassword] = useState('')
   // No browser can be asked whether it is in a library. The person who knows is
   // the one signing in, so they are the one asked.
@@ -104,7 +106,13 @@ function LoginForm() {
       </form>
 
       <p className="text-center text-gray-400 text-sm mt-6">
-        New here? <Link href="/signup" className="text-[#0D9488] font-bold hover:underline">Create your account</Link>
+        New here?{' '}
+        <Link
+          href={email ? `/signup?email=${encodeURIComponent(email)}` : '/signup'}
+          className="text-[#0D9488] font-bold hover:underline"
+        >
+          Create your account
+        </Link>
       </p>
     </div>
   )

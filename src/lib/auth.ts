@@ -54,13 +54,26 @@ export const authOptions: NextAuthOptions = {
         const ua = headers.get('user-agent')
         const ip = coarseIp(headers)
 
-        const { deviceId, isNew, label } = await registerDevice(identity.id, ua, ip)
-
-        // Best-effort and never blocking: a sign-in must not fail because a
-        // notification could not be sent. A device nobody recognises is the
-        // first sign a password has gone astray, which is worth an email.
-        if (isNew) {
-          notifyNewDevice(identity.email, label, ip).catch(() => {})
+        // Recording the device must NEVER decide whether somebody can sign in.
+        //
+        // It did once. The Device table was created by hand as the postgres
+        // superuser rather than by Prisma as the app role, so the app could not
+        // write to it, registerDevice threw, and authorize threw with it —
+        // which NextAuth reports as "that email and password did not match".
+        // Sign-in was down for everybody, and the error blamed the member's
+        // password. The permission is fixed; this makes the shape of that
+        // failure impossible rather than merely unlikely.
+        //
+        // Without a device id the session simply carries none, and the
+        // revocation check in the session callback skips. Less safety than
+        // intended, which is the correct trade against locking everyone out.
+        let deviceId: string | undefined
+        try {
+          const reg = await registerDevice(identity.id, ua, ip)
+          deviceId = reg.deviceId
+          if (reg.isNew) notifyNewDevice(identity.email, reg.label, ip).catch(() => {})
+        } catch (err) {
+          console.error('[auth] device registration failed; signing in anyway:', err)
         }
 
         const isPublic = String(credentials.publicComputer ?? '') === 'true'
