@@ -1,8 +1,8 @@
 // The Beyond Limits Bootcamp offer, in one place.
 //
 // Beyond Limits is the business — membership, monthly fees, corporate sales.
-// HYghLights is the social layer that spans it and other brands. This is the
-// seam between the two: somebody who joins HYghLights on its own is somebody
+// hYghlights is the social layer that spans it and other brands. This is the
+// seam between the two: somebody who joins hYghlights on its own is somebody
 // who has not yet met the product that charges money, and this is what we say
 // to them.
 //
@@ -35,8 +35,8 @@ export const BOOTCAMP_OFFER = {
  * it. Saying it costs one line and prevents "why did my Bootcamp login stop
  * working" entirely.
  */
-export const SHARED_ACCOUNT_PRODUCTS = ['HYghLights', 'Beyond Limits Bootcamp'] as const
+export const SHARED_ACCOUNT_PRODUCTS = ['hYghlights', 'Beyond Limits Bootcamp'] as const
 
 export const SHARED_PASSWORD_NOTICE =
-  'One password covers both HYghLights and Beyond Limits Bootcamp. ' +
+  'One password covers both hYghlights and Beyond Limits Bootcamp. ' +
   'Changing it here changes it for both.'

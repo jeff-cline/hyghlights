@@ -4,6 +4,8 @@ import { getCommunityFeed } from '@/lib/social'
 import { CATEGORY_BY_KEY, categoryLabel } from '@/lib/categories'
 import ReactionBar from '@/components/ReactionBar'
 import HighlightMedia from '@/components/HighlightMedia'
+import ShareOnCardToggle from '@/components/ShareOnCardToggle'
+import { getOrCreateProfile } from '@/lib/highlights'
 
 function fmt(d: string) {
   return new Date(d).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
@@ -13,6 +15,8 @@ export default async function CommunityPage() {
   const user = await requireUser()
   if (!user) redirect('/login')
   const feed = await getCommunityFeed(user.userId, 60)
+  // Needed only so a win ticked for a card that is switched off can say so.
+  const profile = await getOrCreateProfile(user.userId, user.email)
 
   return (
     <main className="max-w-2xl mx-auto px-4 py-10">
@@ -24,7 +28,7 @@ export default async function CommunityPage() {
 
       {feed.length === 0 ? (
         <div className="bg-white border border-gray-100 rounded-3xl shadow-sm p-8 text-center text-gray-500">
-          No HYghLights yet — be the first to share a win.
+          No hYghlights yet — be the first to share a win.
         </div>
       ) : (
         <div className="space-y-4">
@@ -42,6 +46,10 @@ export default async function CommunityPage() {
                 <p className="text-gray-700 whitespace-pre-wrap mb-3">{h.text}</p>
                 <HighlightMedia photoUrl={h.photoUrl} videoUrl={h.videoUrl} />
                 <ReactionBar highlightId={h.id} counts={h.counts} mine={h.mine} />
+                {h.isMine && (
+                  <ShareOnCardToggle highlightId={h.id} initial={h.isShareable}
+                                     cardPublic={profile.cardPublic} />
+                )}
               </div>
             )
           })}

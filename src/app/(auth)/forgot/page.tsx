@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Wordmark from '@/components/Wordmark'
 
 export default function ForgotPage() {
   const [email, setEmail] = useState('')
@@ -30,7 +31,7 @@ export default function ForgotPage() {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <Link href="/" className="inline-block text-2xl font-black tracking-tight">
-            <span className="text-gray-800">HYgh</span><span className="text-[#e07800]">Lights</span>
+            <Wordmark />
           </Link>
           <p className="mt-2 text-gray-500">
             {sent ? 'Check your email.' : 'We will send you a link to choose a new one.'}
@@ -72,7 +73,7 @@ export default function ForgotPage() {
                      value={email} onChange={(e) => setEmail(e.target.value)}
                      className="w-full rounded-xl border border-gray-300 px-4 py-3 text-gray-900 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#34c5c5]" />
               <p className="mt-2 text-xs text-gray-500">
-                Use the address you sign in with on either HYghLights or Beyond Limits
+                Use the address you sign in with on either hYghlights or Beyond Limits
                 Bootcamp — they are the same account.
               </p>
             </div>

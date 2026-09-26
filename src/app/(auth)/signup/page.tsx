@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { BOOTCAMP_OFFER, SHARED_PASSWORD_NOTICE } from '@/lib/bootcamp-offer'
+import Wordmark from '@/components/Wordmark'
 
 /** What the server said when the address already had an account. */
 type SsoNotice = { title: string; body: string }
@@ -53,7 +54,7 @@ export default function SignupPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block text-2xl font-black tracking-tight">
-            <span className="text-gray-800">HYgh</span><span className="text-[#e07800]">Lights</span>
+            <Wordmark />
           </Link>
           <p className="mt-2 text-gray-500">
             {offer ? "You're in. One more thing." : 'Start capturing your wins.'}
@@ -93,7 +94,7 @@ export default function SignupPage() {
                 {BOOTCAMP_OFFER.headline}
               </h2>
               <p className="mt-3 text-white/70">
-                Live classes, the full Vault, and the 34-Minute Method. Your HYghLights
+                Live classes, the full Vault, and the 34-Minute Method. Your hYghlights
                 login already works there — it is the same account.
               </p>
               <p className="mt-4 inline-block rounded-full bg-[#E8A849] px-4 py-1.5 text-sm font-black text-[#0B1D2A]">
@@ -110,7 +111,7 @@ export default function SignupPage() {
               href="/home"
               className="mt-3 block w-full text-center text-sm font-bold text-gray-500 hover:text-gray-800"
             >
-              Not now — take me to HYghLights
+              Not now — take me to hYghlights
             </Link>
           </div>
         ) : (
@@ -128,6 +129,15 @@ export default function SignupPage() {
               </button>
               {/* Said before they choose a password, not after they have one. */}
               <p className="text-center text-xs text-gray-500">{SHARED_PASSWORD_NOTICE}</p>
+              {/* Linked at the moment of joining, not buried in a footer. This is a
+                  private, invite-only room and the agreement is the reason it works. */}
+              <p className="text-center text-xs text-gray-500">
+                By creating an account you agree to{' '}
+                <Link href="/terms" className="font-bold text-[#0D9488] hover:underline">
+                  The Agreement
+                </Link>
+                {' '}— a private, invite-only community for encouragement, not negativity.
+              </p>
             </form>
             <p className="text-center text-gray-400 text-sm mt-6">
               Already have an account? <Link href="/login" className="text-[#0D9488] font-bold hover:underline">Sign in</Link>

@@ -49,11 +49,11 @@ export default async function RecapPage({ searchParams }: { searchParams: Promis
           {recap.label}
         </div>
         {recap.total === 0 ? (
-          <p className="text-gray-500">No HYghLights in this period yet — go make some magic.</p>
+          <p className="text-gray-500">No hYghlights in this period yet — go make some magic.</p>
         ) : (
           <>
             <div className="grid grid-cols-3 gap-4 mb-6">
-              <Big value={recap.total} label="HYghLights" />
+              <Big value={recap.total} label="hYghlights" />
               <Big value={recap.activeDays} label="Active days" />
               <Big value={Object.keys(recap.byCategory).length} label="Categories" />
             </div>

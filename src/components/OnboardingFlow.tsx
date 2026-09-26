@@ -52,7 +52,7 @@ export default function OnboardingFlow({ initialName }: { initialName: string })
       {step === 0 && (
         <div className="text-center">
           <div className="text-5xl mb-4">✨</div>
-          <h1 className="text-3xl font-black text-gray-800 mb-2">Welcome to HYghLights</h1>
+          <h1 className="text-3xl font-black text-gray-800 mb-2">Welcome to hYghlights</h1>
           <p className="text-gray-500 mb-6">Your daily ritual to be seen, tracked, and celebrated. Here&apos;s the spine of it:</p>
           <div className="grid gap-2 text-left mb-8">
             {ITHRIVE.map(([l, phrase, emoji], i) => (
@@ -163,10 +163,10 @@ export default function OnboardingFlow({ initialName }: { initialName: string })
           <div className="text-5xl mb-4">🎉💃</div>
           <h2 className="text-3xl font-black text-gray-800 mb-2">You&apos;re ready, {name.split(' ')[0] || 'friend'}!</h2>
           <p className="text-gray-500 mb-8">
-            Every day, capture your HYghLights. Live a life you don&apos;t need to vacation from. 🏝️
+            Every day, capture your hYghlights. Live a life you don&apos;t need to vacation from. 🏝️
           </p>
           <button className={primary} onClick={finish} disabled={saving}>
-            {saving ? 'Entering…' : 'Enter HYghLights ✨'}
+            {saving ? 'Entering…' : 'Enter hYghlights ✨'}
           </button>
         </div>
       )}

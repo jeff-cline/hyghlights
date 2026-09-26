@@ -1,11 +1,11 @@
 // Which product an account was born in.
 //
-// HYghLights and Beyond Limits share one `User` row, so "do you have an
+// hYghlights and Beyond Limits share one `User` row, so "do you have an
 // account" is the same question on both sites. "Where did you come from" is
 // not, and it decides what we say to someone:
 //
 //   born on Beyond Limits  → "you already have a single sign-on, welcome"
-//   born on HYghLights     → "join Beyond Limits, 10% off"
+//   born on hYghlights     → "join Beyond Limits, 10% off"
 //
 // Getting it backwards means offering a discount to somebody who is already
 // paying, or welcoming somebody to a product they have never heard of.
@@ -24,7 +24,7 @@ export type AccountOrigin = 'hyghlights' | 'beyondlimits'
  * Where this account was created.
  *
  * Anything that is not clearly ours is treated as Beyond Limits, because that
- * is where every account came from before HYghLights could create one — and
+ * is where every account came from before hYghlights could create one — and
  * because the failure modes are not equal. Mistaking a Beyond Limits member
  * for a newcomer offers them a discount on something they already pay for;
  * mistaking a newcomer for a member welcomes them to a product they have never
@@ -51,7 +51,7 @@ export function isBeyondLimitsMember(userId: string | null | undefined): boolean
  */
 export const SSO_WELCOME_TITLE = "You're already a member of Beyond Limits Bootcamp."
 export const SSO_WELCOME_BODY =
-  'You have a single sign-on for HYghLights — the same email and password work here. ' +
+  'You have a single sign-on for hYghlights — the same email and password work here. ' +
   'Welcome to the journey.'
 
 /** Said to someone whose account was created here, so it must not mention SSO. */

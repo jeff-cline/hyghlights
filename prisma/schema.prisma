@@ -24,10 +24,24 @@ model Profile {
   currentStreak   Int       @default(0)
   longestStreak   Int       @default(0)
   lastEntryDate   DateTime? // the day (UTC midnight) of their most recent highlight
+
+  /// Their why, in their words. The Y in hYghlights is *why* — the question the
+  /// whole product asks — so it is the one thing the card leads with.
+  why             String?
+
+  /// The public card. OFF until the member turns it on: this is a private,
+  /// invite-only community, and nothing anybody already wrote becomes visible
+  /// to strangers because a feature shipped.
+  cardPublic      Boolean   @default(false)
+  /// firstname-lastname, numbered on collision. Issued once and never rewritten
+  /// — a shared link that stops working is worse than an imperfect slug.
+  cardSlug        String?   @unique
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt @default(now())
 
   @@index([email])
+  @@index([cardPublic])
 }
 
 // A single highlight / celebration / memory, filed to a day and a life category.
@@ -41,6 +55,12 @@ model Highlight {
   photoUrl  String?
   videoUrl  String?
   inJar     Boolean  @default(false) // dragged into that month's jar
+
+  /// Cleared for the member's public card. Per-highlight and opt-in, because
+  /// every one of these was written inside a members-only room. A card shows
+  /// only what its owner has ticked, one win at a time.
+  isShareable Boolean @default(false)
+
   createdAt DateTime @default(now())
 
   reactions Reaction[]

@@ -20,6 +20,10 @@ export type FeedItem = {
   createdAt: string
   counts: Record<ReactionType, number>
   mine: ReactionType[]
+  /// Whether this win is cleared for the author's public card. Only meaningful,
+  /// and only surfaced in the UI, when isMine — it is nobody else's business
+  /// which of their wins somebody has chosen to show the world.
+  isShareable: boolean
 }
 
 function nameFromEmail(email: string) {
@@ -63,6 +67,7 @@ export async function getCommunityFeed(currentUserId: string, limit = 50): Promi
       createdAt: h.createdAt.toISOString(),
       counts,
       mine,
+      isShareable: h.isShareable,
     }
   })
 }

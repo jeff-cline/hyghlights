@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
   // A collision is not necessarily a mistake. One User row serves both
   // products, so an address "already taken" here often belongs to a Beyond
-  // Limits member who has never opened HYghLights — and telling them only
+  // Limits member who has never opened hYghlights — and telling them only
   // "that email is taken" hides the single sign-on that is the whole point.
   const existing = await findIdentity(email)
   if (existing) {

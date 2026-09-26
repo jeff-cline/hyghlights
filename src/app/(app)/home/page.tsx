@@ -48,7 +48,7 @@ export default async function HomePage() {
 
       {/* Stats row */}
       <div className="grid grid-cols-3 gap-3 mb-8">
-        <Stat label="HYghLights" value={total} />
+        <Stat label="hYghlights" value={total} />
         <Stat label="Best streak" value={profile.longestStreak} />
         <Stat label="Today" value={todays.length} />
       </div>
@@ -82,7 +82,7 @@ export default async function HomePage() {
       {/* Today */}
       {todays.length > 0 && (
         <section className="mt-10">
-          <h3 className="text-gray-800 font-black mb-3">Today&apos;s HYghLights</h3>
+          <h3 className="text-gray-800 font-black mb-3">Today&apos;s hYghlights</h3>
           <div className="space-y-3">
             {todays.map((h) => (
               <HighlightCard key={h.id} category={h.category} text={h.text} when={h.createdAt} photoUrl={h.photoUrl} videoUrl={h.videoUrl} />

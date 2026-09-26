@@ -1,5 +1,5 @@
 // Gamification: badges earned from streaks, volume, and breadth. Pure function
-// so both HYghLights and the Beyond Limits Community tab compute them the same.
+// so both hYghlights and the Beyond Limits Community tab compute them the same.
 export type Badge = {
   key: string
   label: string

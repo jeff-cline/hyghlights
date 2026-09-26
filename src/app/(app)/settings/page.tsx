@@ -17,6 +17,9 @@ export default async function SettingsPage() {
           displayName: profile.displayName ?? '',
           peacePlace: profile.peacePlace ?? '',
           celebrationSong: profile.celebrationSong ?? '',
+          why: profile.why ?? '',
+          cardPublic: profile.cardPublic,
+          cardSlug: profile.cardSlug,
         }}
       />
     </main>

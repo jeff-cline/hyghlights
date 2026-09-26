@@ -14,7 +14,7 @@ export type Category = {
   key: CategoryKey
   label: string
   emoji: string
-  color: string // matte-gold / teal accents on the dark HYghLights canvas
+  color: string // matte-gold / teal accents on the dark hYghlights canvas
 }
 
 export const CATEGORIES: Category[] = [

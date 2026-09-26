@@ -105,6 +105,7 @@ export async function getGroupFeed(groupId: string, userId: string, limit = 60):
       createdAt: h.createdAt.toISOString(),
       counts,
       mine,
+      isShareable: h.isShareable,
     }
   })
 }

@@ -2,10 +2,10 @@ import { Pool } from 'pg'
 import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto'
 
-// Shared account store. HYghLights and Beyond Limits authenticate against the
+// Shared account store. hYghlights and Beyond Limits authenticate against the
 // SAME `User` table (in the Beyond Limits database) so one email + password
 // works on both. We talk to it directly over pg — never with Prisma db push,
-// so HYghLights migrations can't touch that table.
+// so hYghlights migrations can't touch that table.
 const g = globalThis as unknown as { identityPool?: Pool }
 const pool =
   g.identityPool ??
@@ -48,7 +48,7 @@ export async function findIdentity(email: string): Promise<Identity | null> {
   return { id: u.id, email: u.email, name: u.name, role: u.role, isActive: u.isActive, mustChangePassword: u.mustChangePassword }
 }
 
-// Standalone HYghLights sign-up: creates the account in the shared table, so
+// Standalone hYghlights sign-up: creates the account in the shared table, so
 // it immediately works on Beyond Limits too. Default role is the lowest tier.
 export async function createIdentity(email: string, name: string | null, password: string): Promise<Identity> {
   const clean = email.toLowerCase().trim()
@@ -68,7 +68,7 @@ export async function createIdentity(email: string, name: string | null, passwor
  * Set a new password on the shared account.
  *
  * Writes to the same `User` row both products authenticate against, which is
- * the whole point: a reset started on HYghLights changes the password on
+ * the whole point: a reset started on hYghlights changes the password on
  * Beyond Limits too, because there was only ever one password.
  *
  * Also clears `mustChangePassword` — somebody who just chose a password has

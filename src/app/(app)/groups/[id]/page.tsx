@@ -36,7 +36,7 @@ export default async function GroupPage({ params }: { params: Promise<{ id: stri
 
       {feed.length === 0 ? (
         <div className="bg-white border border-gray-100 rounded-3xl shadow-sm p-8 text-center text-gray-500">
-          No HYghLights in this circle yet — share the first win.
+          No hYghlights in this circle yet — share the first win.
         </div>
       ) : (
         <div className="space-y-4">

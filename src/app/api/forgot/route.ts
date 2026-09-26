@@ -26,9 +26,9 @@ export async function POST(req: Request) {
       const link = `${base}/reset?token=${encodeURIComponent(signReset(email))}`
       await coreEmail(
         email,
-        'Reset your HYghLights password',
+        'Reset your hYghlights password',
         `<div style="font-family:Arial,Helvetica,sans-serif;color:#111;max-width:520px">
-           <h2 style="margin:0 0 6px"><span style="color:#1f2937">HYgh</span><span style="color:#e07800">Lights</span></h2>
+           <h2 style="margin:0 0 6px;font-weight:900;letter-spacing:-.02em"><span style="color:#000">h</span><span style="color:#e07800;font-weight:900">Y</span><span style="color:#000">ghlights</span></h2>
            <h3 style="color:#0D9488;margin:18px 0 8px">Choose a new password</h3>
            <p style="line-height:1.55">Tap the button below to set a new password. The link works for one hour.</p>
            <p style="margin:22px 0">

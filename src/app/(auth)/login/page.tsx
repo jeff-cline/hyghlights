@@ -4,6 +4,7 @@ import { Suspense, useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import Wordmark from '@/components/Wordmark'
 
 function LoginForm() {
   const searchParams = useSearchParams()
@@ -34,7 +35,7 @@ function LoginForm() {
     <div className="w-full max-w-md">
       <div className="text-center mb-8">
         <Link href="/" className="inline-block text-2xl font-black tracking-tight">
-          <span className="text-gray-800">HYgh</span><span className="text-[#e07800]">Lights</span>
+          <Wordmark />
         </Link>
         <p className="mt-2 text-gray-500">Welcome back. Time to celebrate your wins.</p>
       </div>
@@ -73,7 +74,7 @@ function LoginForm() {
           {submitting ? 'Signing in…' : 'Sign in'}
         </button>
         <p className="text-center text-sm text-gray-400">
-          One account for HYghLights and Beyond Limits Bootcamp —{' '}
+          One account for hYghlights and Beyond Limits Bootcamp —{' '}
           <Link href="/forgot" className="font-bold text-[#0D9488] hover:underline">
             reset it
           </Link>{' '}

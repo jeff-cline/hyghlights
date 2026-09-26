@@ -2,7 +2,7 @@ import type { NextAuthOptions, User as NextAuthUser } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import { verifyIdentity } from '@/lib/identity'
 
-// HYghLights authenticates against the SHARED account store (the Beyond Limits
+// hYghlights authenticates against the SHARED account store (the Beyond Limits
 // `User` table) via src/lib/identity.ts, so one email + password works on both
 // products. The JWT carries the shared userId + email + role.
 type AppUser = NextAuthUser & { role: string }

@@ -10,9 +10,9 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "HYghLights — Celebrate every win",
+  title: "hYghlights — Celebrate every win",
   description:
-    "A daily ritual to capture your HYghLights, honor your progress, and celebrate your wins. Powered by the iTHRIVE framework.",
+    "A daily ritual to capture your hYghlights, honor your progress, and celebrate your wins. Powered by the iTHRIVE framework.",
 };
 
 export default function RootLayout({

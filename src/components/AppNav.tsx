@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import Wordmark from '@/components/Wordmark'
 
 const LINKS = [
   { href: '/home', label: 'Today' },
@@ -21,7 +22,7 @@ export default function AppNav() {
     <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-gray-100">
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link href="/home" className="text-lg font-black tracking-tight">
-          <span className="text-gray-800">HYgh</span><span className="text-[#e07800]">Lights</span>
+          <Wordmark />
         </Link>
         <nav className="flex items-center gap-1">
           {LINKS.map((l) => {
