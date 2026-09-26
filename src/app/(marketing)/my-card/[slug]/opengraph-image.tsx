@@ -52,7 +52,21 @@ export default async function Image(
     )
   }
 
-  const places = placesWithIcons(card.peacePlace).filter((p) => p.emoji)
+  // How many chips fit depends on what else is on the card. Satori has a fixed
+  // 630px and no overflow: too much content does not scroll or clip tidily, it
+  // compresses until the blocks overlap each other. Measured, not guessed — a
+  // long name plus a why plus two rows of chips came to roughly 568px against
+  // 550 available, and the why printed straight through the name.
+  const hasWhy = Boolean(card.why)
+  const places = placesWithIcons(card.peacePlace)
+    .filter((p) => p.emoji)
+    .slice(0, hasWhy ? 3 : 4)
+
+  // A long name at 76px runs off the side. Stepped down rather than wrapped,
+  // because a two-line name pushes everything below it off the image.
+  const nameSize = card.displayName.length > 22 ? 54
+    : card.displayName.length > 16 ? 64
+    : 76
 
   return new ImageResponse(
     (
@@ -60,10 +74,10 @@ export default async function Image(
         width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
         background: `linear-gradient(135deg, ${NAVY} 0%, ${MID} 55%, ${NAVY} 100%)`,
-        padding: '48px 64px', color: '#fff', fontFamily: 'sans-serif',
+        padding: '40px 64px', color: '#fff', fontFamily: 'sans-serif',
       }}>
         {/* the mark, big — this is the brand doing the work in a feed */}
-        <div style={{ display: 'flex', alignItems: 'center', fontSize: 68, fontWeight: 900 }}>
+        <div style={{ display: 'flex', alignItems: 'center', fontSize: 68, fontWeight: 900, flexShrink: 0 }}>
           <span style={{ color: '#fff' }}>h</span>
           <span style={{ color: ORANGE }}>Y</span>
           <span style={{ color: '#fff' }}>ghlights</span>
@@ -71,7 +85,7 @@ export default async function Image(
 
         {/* the name, centred beneath it */}
         <div style={{
-          display: 'flex', fontSize: 76, fontWeight: 900, marginTop: 10,
+          display: 'flex', flexShrink: 0, fontSize: nameSize, fontWeight: 900, marginTop: 10,
           lineHeight: 1.05, textAlign: 'center', color: '#fff',
         }}>
           {card.displayName}
@@ -80,7 +94,7 @@ export default async function Image(
         {/* their why, when they have written one */}
         {card.why && (
           <div style={{
-            display: 'flex', fontSize: 30, color: 'rgba(255,255,255,0.78)',
+            display: 'flex', flexShrink: 0, fontSize: 28, color: 'rgba(255,255,255,0.78)',
             marginTop: 12, textAlign: 'center', maxWidth: 880,
           }}>
             {`“${card.why.slice(0, 100)}”`}
@@ -90,18 +104,18 @@ export default async function Image(
         {/* the icons, larger, directly under the name */}
         {places.length > 0 && (
           <div style={{
-            display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
-            marginTop: 26, maxWidth: 1040,
+            display: 'flex', flexShrink: 0, flexWrap: 'wrap', justifyContent: 'center',
+            marginTop: 22, maxWidth: 1040,
           }}>
             {places.map((p) => (
               <div key={p.label} style={{
                 display: 'flex', alignItems: 'center',
                 background: 'rgba(255,255,255,0.08)',
                 border: '1px solid rgba(255,255,255,0.16)',
-                borderRadius: 999, padding: '12px 24px', margin: 7,
+                borderRadius: 999, padding: '14px 28px', margin: 8,
               }}>
-                <span style={{ fontSize: 46 }}>{p.emoji}</span>
-                <span style={{ fontSize: 26, marginLeft: 14, color: 'rgba(255,255,255,0.9)' }}>
+                <span style={{ fontSize: 60 }}>{p.emoji}</span>
+                <span style={{ fontSize: 30, marginLeft: 16, color: 'rgba(255,255,255,0.9)' }}>
                   {p.label}
                 </span>
               </div>
@@ -111,13 +125,13 @@ export default async function Image(
 
         {/* the invitation, which is what a stranger is actually being offered */}
         <div style={{
-          display: 'flex', fontSize: 36, fontWeight: 800, color: GOLD, marginTop: 30,
+          display: 'flex', flexShrink: 0, fontSize: 52, fontWeight: 900, color: GOLD, marginTop: 22,
         }}>
           Follow my journey…
         </div>
 
         <div style={{
-          display: 'flex', fontSize: 24, color: TEAL, fontWeight: 700, marginTop: 10,
+          display: 'flex', flexShrink: 0, fontSize: 24, color: TEAL, fontWeight: 700, marginTop: 8,
         }}>
           {`hyghlights.com · ${card.currentStreak} day streak · ${card.totalWins} ${card.totalWins === 1 ? 'win' : 'wins'}`}
         </div>

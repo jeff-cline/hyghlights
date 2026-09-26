@@ -153,7 +153,21 @@ export default async function MyCardPage(
         <ShareRow url={url} text={shareText(card.displayName, card.why)} />
 
         {/* ── the invitation, which is why this page is public ─────────── */}
-        <section className="mt-8 rounded-3xl border border-[#0D9488]/20 bg-white p-7 text-center shadow-sm">
+        {/* In the member's own voice, because a stranger arrived here through a
+            person, not through us. The ask comes before the branding. */}
+        <section className="mt-8 rounded-3xl bg-gradient-to-br from-[#0B1D2A] via-[#123243] to-[#0B1D2A] p-7 text-center shadow-lg">
+          <p className="mx-auto max-w-lg text-xl font-black leading-snug text-white md:text-2xl">
+            I&rsquo;m celebrating wins with <Wordmark onDark />.
+            Please follow my journey.
+          </p>
+          <p className="mx-auto mt-3 max-w-md text-white/85">
+            {signedIn
+              ? 'You are already a member — head back in and capture today\u2019s.'
+              : 'Create an account if you don\u2019t have one, or sign in to yours.'}
+          </p>
+        </section>
+
+        <section className="mt-6 rounded-3xl border border-[#0D9488]/20 bg-white p-7 text-center shadow-sm">
           {signedIn ? (
             <>
               <h2 className="text-2xl font-black leading-tight text-gray-800">
