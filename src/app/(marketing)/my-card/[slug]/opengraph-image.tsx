@@ -77,7 +77,7 @@ export default async function Image(
             display: 'flex', fontSize: 20, letterSpacing: 4, color: PALE,
             textTransform: 'uppercase', fontWeight: 700,
           }}>
-            {card.totalWins} wins celebrated
+            {card.totalWins} {card.totalWins === 1 ? 'win' : 'wins'} celebrated
           </div>
           <div style={{ display: 'flex', fontSize: 78, fontWeight: 900, marginTop: 8, lineHeight: 1.05 }}>
             {card.displayName}

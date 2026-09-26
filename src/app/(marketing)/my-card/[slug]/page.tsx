@@ -27,9 +27,10 @@ export async function generateMetadata(
   if (!card) return { title: 'Not found', robots: { index: false, follow: false } }
 
   const title = `${card.displayName} · hYghlights`
+  const wins = `${card.totalWins} ${card.totalWins === 1 ? 'win' : 'wins'}`
   const description = card.why
-    ? `“${card.why}” — ${card.totalWins} wins celebrated on hYghlights.`
-    : `${card.totalWins} wins celebrated on hYghlights. Come and capture yours.`
+    ? `“${card.why}” — ${wins} celebrated on hYghlights.`
+    : `${wins} celebrated on hYghlights. Come and capture yours.`
 
   return {
     title,
