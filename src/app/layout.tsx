@@ -10,6 +10,11 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
+  // Without this, Next resolves og:image against the origin the SERVER sees —
+  // which behind nginx is http://localhost:3060. Every shared card would have
+  // handed Facebook, X and iMessage a localhost image URL and unfurled with no
+  // picture at all, while looking perfectly correct in the page source.
+  metadataBase: new URL(process.env.NEXTAUTH_URL || "https://hyghlights.com"),
   title: "hYghlights — Celebrate every win",
   description:
     "A daily ritual to capture your hYghlights, honor your progress, and celebrate your wins. Powered by the iTHRIVE framework.",
