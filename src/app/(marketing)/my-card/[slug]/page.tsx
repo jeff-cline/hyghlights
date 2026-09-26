@@ -150,7 +150,8 @@ export default async function MyCardPage(
         </section>
 
         {/* ── share it onward ──────────────────────────────────────────── */}
-        <ShareRow url={url} text={shareText(card.displayName, card.why)} />
+        <ShareRow url={url} text={shareText(card.displayName, card.why)}
+                  slug={card.slug} canEmail={signedIn} />
 
         {/* ── the invitation, which is why this page is public ─────────── */}
         {/* In the member's own voice, because a stranger arrived here through a

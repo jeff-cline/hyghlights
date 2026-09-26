@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { requireUser } from '@/lib/session'
 import { sendBottle } from '@/lib/bottles'
+import { notifyBottle } from '@/lib/bottle-email'
 import { getOrCreateProfile } from '@/lib/highlights'
 
 const schema = z.object({
@@ -18,13 +19,23 @@ export async function POST(req: Request) {
   if (!parsed.success) return NextResponse.json({ error: 'Enter a friend’s email and a message. 🌊' }, { status: 400 })
 
   const profile = await getOrCreateProfile(user.userId, user.email)
+  const fromName = profile.displayName ?? user.email.split('@')[0]
+
   await sendBottle({
     fromUserId: user.userId,
     fromEmail: user.email,
-    fromName: profile.displayName ?? user.email.split('@')[0],
+    fromName,
     toEmail: parsed.data.toEmail,
     message: parsed.data.message,
     photoUrl: parsed.data.photoUrl,
   })
+
+  // Announce it. Bottles were stored and never mentioned to anybody, so one
+  // sent to a person who was not already on the Ocean page simply sat unread.
+  // Fire-and-forget: the bottle is already saved, and a slow mail server must
+  // not turn a delivered message into an error on the sender's screen.
+  notifyBottle({ toEmail: parsed.data.toEmail, fromName, message: parsed.data.message })
+    .catch(() => {})
+
   return NextResponse.json({ ok: true })
 }

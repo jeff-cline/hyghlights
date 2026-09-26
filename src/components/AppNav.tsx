@@ -19,7 +19,7 @@ const LINKS = [
   { href: '/settings', label: 'Settings' },
 ]
 
-export default function AppNav() {
+export default function AppNav({ unopened = 0 }: { unopened?: number }) {
   const pathname = usePathname()
   return (
     <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-gray-100">
@@ -44,6 +44,20 @@ export default function AppNav() {
               </Link>
             )
           })}
+          {/* The count, where it is looked for: top right, before sign out. Zero
+              renders nothing — a badge showing 0 is noise pretending to be news. */}
+          {unopened > 0 && (
+            <Link
+              href="/bottles"
+              aria-label={`${unopened} unopened ${unopened === 1 ? 'bottle' : 'bottles'}`}
+              className="relative shrink-0 rounded-full px-2 py-1.5 text-gray-500 transition-colors hover:text-[#0D9488]"
+            >
+              <span aria-hidden="true" className="text-lg">🔔</span>
+              <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[#e07800] px-1 text-[11px] font-black text-white">
+                {unopened > 9 ? '9+' : unopened}
+              </span>
+            </Link>
+          )}
           <button
             type="button"
             onClick={() => signOut({ callbackUrl: '/' })}

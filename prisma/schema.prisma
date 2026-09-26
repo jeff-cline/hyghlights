@@ -213,3 +213,18 @@ model Device {
   @@index([userId, revokedAt])
   @@index([lastSeenAt])
 }
+
+/// One card emailed to one address.
+///
+/// Exists to make the rate limit real — without a record there is no way to
+/// tell a member sending a handful of invitations from an account being used
+/// to relay mail. Nothing here is shown to anybody.
+model CardInvite {
+  id         String   @id @default(cuid())
+  fromUserId String
+  slug       String
+  toEmail    String
+  createdAt  DateTime @default(now())
+
+  @@index([fromUserId, createdAt])
+}

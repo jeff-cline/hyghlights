@@ -15,7 +15,19 @@ import { SHARE_TARGETS } from '@/lib/card'
  * a phone it is both fewer taps and the only route to the apps people actually
  * use. It is feature-detected, not sniffed.
  */
-export default function ShareRow({ url, text }: { url: string; text: string }) {
+export default function ShareRow({
+  url, text, slug, canEmail,
+}: {
+  url: string
+  text: string
+  slug: string
+  /** Only signed-in members may send mail from here — see the invite route. */
+  canEmail: boolean
+}) {
+  const [invite, setInvite] = useState('')
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState<string | null>(null)
+  const [inviteError, setInviteError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [busy, setBusy] = useState(false)
 
@@ -77,6 +89,57 @@ export default function ShareRow({ url, text }: { url: string; text: string }) {
           )
         })}
       </div>
+
+      {/* Email it directly. Social sharing only reaches people who already
+          follow you somewhere public; the person most likely to join because
+          you asked is usually one you would email. */}
+      {canEmail && (
+        <form
+          className="mt-5 border-t border-gray-100 pt-5"
+          onSubmit={async (e) => {
+            e.preventDefault()
+            setSending(true); setInviteError(null); setSent(null)
+            try {
+              const res = await fetch('/api/card/invite', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slug, toEmail: invite }),
+              })
+              const b = await res.json().catch(() => ({}))
+              if (!res.ok) { setInviteError(b.error ?? 'That could not be sent.'); return }
+              setSent(invite); setInvite('')
+            } catch {
+              setInviteError('That could not be sent.')
+            } finally {
+              setSending(false)
+            }
+          }}
+        >
+          <label htmlFor="invite" className="block text-center text-sm font-bold text-gray-700">
+            Or send it to someone by email
+          </label>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <input
+              id="invite" type="email" required value={invite}
+              onChange={(e) => setInvite(e.target.value)}
+              placeholder="their@email.com"
+              className="min-w-[200px] flex-1 rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#34c5c5]"
+            />
+            <button type="submit" disabled={sending || !invite}
+                    className="shrink-0 rounded-xl bg-[#0D9488] px-6 py-3 font-black text-white transition-transform hover:scale-[1.02] disabled:opacity-60">
+              {sending ? 'Sending…' : 'Send'}
+            </button>
+          </div>
+          {sent && (
+            <p className="mt-2 text-center text-sm font-bold text-[#0D9488]">
+              Sent to {sent} ✓
+            </p>
+          )}
+          {inviteError && (
+            <p className="mt-2 text-center text-sm font-semibold text-red-600">{inviteError}</p>
+          )}
+        </form>
+      )}
     </section>
   )
 }
