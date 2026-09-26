@@ -24,7 +24,6 @@ export const revalidate = 3600
 const NAVY = '#0B1D2A'
 const MID = '#123243'
 const TEAL = '#34c5c5'
-const PALE = '#9FE8E8'
 const GOLD = '#E8A849'
 const ORANGE = '#e07800'
 
@@ -54,66 +53,55 @@ export default async function Image(
   }
 
   const places = placesWithIcons(card.peacePlace).filter((p) => p.emoji)
-  const firstName = card.displayName.split(' ')[0]
 
   return new ImageResponse(
     (
       <div style={{
         width: '100%', height: '100%', display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
         background: `linear-gradient(135deg, ${NAVY} 0%, ${MID} 55%, ${NAVY} 100%)`,
-        padding: '56px 64px', color: '#fff',
-        fontFamily: 'sans-serif',
+        padding: '48px 64px', color: '#fff', fontFamily: 'sans-serif',
       }}>
-        {/* the mark */}
-        <div style={{ display: 'flex', alignItems: 'center', fontSize: 34, fontWeight: 900 }}>
+        {/* the mark, big — this is the brand doing the work in a feed */}
+        <div style={{ display: 'flex', alignItems: 'center', fontSize: 68, fontWeight: 900 }}>
           <span style={{ color: '#fff' }}>h</span>
           <span style={{ color: ORANGE }}>Y</span>
           <span style={{ color: '#fff' }}>ghlights</span>
         </div>
 
-        {/* who */}
-        <div style={{ display: 'flex', flexDirection: 'column', marginTop: 34 }}>
-          <div style={{
-            display: 'flex', fontSize: 20, letterSpacing: 4, color: PALE,
-            textTransform: 'uppercase', fontWeight: 700,
-          }}>
-            {card.totalWins} {card.totalWins === 1 ? 'win' : 'wins'} celebrated
-          </div>
-          <div style={{ display: 'flex', fontSize: 78, fontWeight: 900, marginTop: 8, lineHeight: 1.05 }}>
-            {card.displayName}
-          </div>
+        {/* the name, centred beneath it */}
+        <div style={{
+          display: 'flex', fontSize: 76, fontWeight: 900, marginTop: 10,
+          lineHeight: 1.05, textAlign: 'center', color: '#fff',
+        }}>
+          {card.displayName}
         </div>
 
-        {/* their why — the reason the Y is capitalised */}
+        {/* their why, when they have written one */}
         {card.why && (
           <div style={{
-            display: 'flex', flexDirection: 'column', marginTop: 26,
-            borderLeft: `6px solid ${GOLD}`, paddingLeft: 22,
+            display: 'flex', fontSize: 30, color: 'rgba(255,255,255,0.78)',
+            marginTop: 12, textAlign: 'center', maxWidth: 880,
           }}>
-            <div style={{ display: 'flex', fontSize: 17, letterSpacing: 3, color: GOLD, fontWeight: 800 }}>
-              MY WHY
-            </div>
-            <div style={{
-              display: 'flex', fontSize: 34, color: 'rgba(255,255,255,0.92)',
-              marginTop: 6, lineHeight: 1.25,
-            }}>
-              {`“${card.why.slice(0, 120)}”`}
-            </div>
+            {`“${card.why.slice(0, 100)}”`}
           </div>
         )}
 
-        {/* the icons, which is the point of putting this in the image */}
+        {/* the icons, larger, directly under the name */}
         {places.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: 30 }}>
+          <div style={{
+            display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
+            marginTop: 26, maxWidth: 1040,
+          }}>
             {places.map((p) => (
               <div key={p.label} style={{
                 display: 'flex', alignItems: 'center',
                 background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(255,255,255,0.14)',
-                borderRadius: 999, padding: '10px 20px', marginRight: 12, marginBottom: 12,
+                border: '1px solid rgba(255,255,255,0.16)',
+                borderRadius: 999, padding: '12px 24px', margin: 7,
               }}>
-                <span style={{ fontSize: 34 }}>{p.emoji}</span>
-                <span style={{ fontSize: 22, marginLeft: 12, color: 'rgba(255,255,255,0.85)' }}>
+                <span style={{ fontSize: 46 }}>{p.emoji}</span>
+                <span style={{ fontSize: 26, marginLeft: 14, color: 'rgba(255,255,255,0.9)' }}>
                   {p.label}
                 </span>
               </div>
@@ -121,42 +109,20 @@ export default async function Image(
           </div>
         )}
 
-        {/* pushed to the bottom whatever is above it */}
-        <div style={{ display: 'flex', flex: 1 }} />
+        {/* the invitation, which is what a stranger is actually being offered */}
+        <div style={{
+          display: 'flex', fontSize: 36, fontWeight: 800, color: GOLD, marginTop: 30,
+        }}>
+          Follow my journey…
+        </div>
 
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex' }}>
-            <Stat value={String(card.currentStreak)} label="DAY STREAK" gold />
-            <Stat value={String(card.totalWins)} label="WINS" />
-            <Stat value={String(card.longestStreak)} label="BEST" />
-          </div>
-          <div style={{
-            display: 'flex', fontSize: 22, color: TEAL, fontWeight: 800,
-          }}>
-            {`See ${firstName}’s wins · hyghlights.com`}
-          </div>
+        <div style={{
+          display: 'flex', fontSize: 24, color: TEAL, fontWeight: 700, marginTop: 10,
+        }}>
+          {`hyghlights.com · ${card.currentStreak} day streak · ${card.totalWins} ${card.totalWins === 1 ? 'win' : 'wins'}`}
         </div>
       </div>
     ),
     size,
-  )
-}
-
-function Stat({ value, label, gold }: { value: string; label: string; gold?: boolean }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', marginRight: 46 }}>
-      <div style={{
-        display: 'flex', fontSize: 52, fontWeight: 900,
-        color: gold ? GOLD : '#fff',
-      }}>
-        {value}
-      </div>
-      <div style={{
-        display: 'flex', fontSize: 15, letterSpacing: 2.5,
-        color: 'rgba(255,255,255,0.55)', fontWeight: 700, marginTop: 2,
-      }}>
-        {label}
-      </div>
-    </div>
   )
 }

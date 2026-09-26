@@ -94,7 +94,9 @@ export default function SettingsForm({
       </div>
 
       {/* ── the public card ──────────────────────────────────────────── */}
-      <div className="rounded-2xl bg-[#F6F8FA] p-5">
+      {/* Anchor target for /my-card, which sends anyone whose card is still
+          off straight to the switch rather than to a 404. */}
+      <div id="card" className="scroll-mt-20 rounded-2xl bg-[#F6F8FA] p-5">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="font-black text-gray-800">Your card</p>

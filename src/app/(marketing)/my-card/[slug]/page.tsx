@@ -7,6 +7,7 @@ import { cardUrl, shareText } from '@/lib/card'
 import { CATEGORY_BY_KEY, categoryLabel } from '@/lib/categories'
 import { placesWithIcons } from '@/lib/peace-places'
 import ShareRow from '@/components/ShareRow'
+import { getSession } from '@/lib/session'
 
 export const dynamic = 'force-dynamic'
 
@@ -56,6 +57,12 @@ export default async function MyCardPage(
 
   const url = cardUrl(card.slug)
   const places = placesWithIcons(card.peacePlace)
+
+  // Who is looking. A shared card lands strangers and members alike on the same
+  // page, and sending an existing member to a signup form is a dead end — they
+  // already have an account, and the button they need says "take me in".
+  const session = await getSession()
+  const signedIn = Boolean(session?.userId)
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#34c5c5]/10 via-[#F6F8FA] to-white px-4 py-12">
@@ -147,25 +154,51 @@ export default async function MyCardPage(
 
         {/* ── the invitation, which is why this page is public ─────────── */}
         <section className="mt-8 rounded-3xl border border-[#0D9488]/20 bg-white p-7 text-center shadow-sm">
-          <h2 className="text-2xl font-black leading-tight text-gray-800">
-            Start your own <Wordmark />
-          </h2>
-          <p className="mx-auto mt-3 max-w-md text-gray-600">
-            A private, invite-only community for people on a journey to make the world
-            better. Love, peace, patience, kindness, brightness — and absolutely no
-            doom. There are enough places for that.
-          </p>
-          <Link href="/signup"
-                className="mt-6 inline-block rounded-full bg-gradient-to-r from-[#E8A849] to-[#e07800] px-8 py-3.5 font-black text-white shadow-lg transition-transform hover:scale-[1.02]">
-            Create my free account
-          </Link>
-          <p className="mt-4 text-xs text-gray-500">
-            Free to join.{' '}
-            <Link href="/terms" className="font-bold text-[#0D9488] hover:underline">
-              Read The Agreement
-            </Link>
-            {' '}first — it is short, and it is the point.
-          </p>
+          {signedIn ? (
+            <>
+              <h2 className="text-2xl font-black leading-tight text-gray-800">
+                Welcome back to <Wordmark />
+              </h2>
+              <p className="mx-auto mt-3 max-w-md text-gray-600">
+                You are signed in. Go and capture today&rsquo;s win.
+              </p>
+              <Link href="/home"
+                    className="mt-6 inline-block rounded-full bg-gradient-to-r from-[#E8A849] to-[#e07800] px-8 py-3.5 font-black text-white shadow-lg transition-transform hover:scale-[1.02]">
+                Go to my account
+              </Link>
+              <p className="mt-4 text-xs text-gray-500">
+                <Link href="/my-card" className="font-bold text-[#0D9488] hover:underline">
+                  Share your own card
+                </Link>
+                {' '}— it is how people find their way in.
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="text-2xl font-black leading-tight text-gray-800">
+                Follow the journey on <Wordmark />
+              </h2>
+              <p className="mx-auto mt-3 max-w-md text-gray-600">
+                A private, invite-only community for people on a journey to make the world
+                better. Love, peace, patience, kindness, brightness — and absolutely no
+                doom. There are enough places for that.
+              </p>
+              <Link href="/signup"
+                    className="mt-6 inline-block rounded-full bg-gradient-to-r from-[#E8A849] to-[#e07800] px-8 py-3.5 font-black text-white shadow-lg transition-transform hover:scale-[1.02]">
+                Create my free account
+              </Link>
+              <p className="mt-4 text-xs text-gray-500">
+                Free to join.{' '}
+                <Link href="/terms" className="font-bold text-[#0D9488] hover:underline">
+                  Read The Agreement
+                </Link>
+                {' '}first — it is short, and it is the point.{' '}
+                <Link href="/login" className="font-bold text-[#0D9488] hover:underline">
+                  Already a member?
+                </Link>
+              </p>
+            </>
+          )}
         </section>
       </div>
     </main>
