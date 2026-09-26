@@ -104,7 +104,15 @@ DELETES=$(rsync -azn --delete "${RSYNC_EXCLUDES[@]}" --itemize-changes ./ $HOST:
 if [ -n "$DELETES" ]; then
   echo "$DELETES" | sed 's/^/  /'
   echo
-  read -r -p "  These server files will be DELETED. Type 'yes' to continue: " ok
+  # Read from the terminal, not stdin. The rsync above runs over ssh, which
+  # swallows stdin — so a piped answer never reaches this prompt and the deploy
+  # aborts looking like the guard tripped. No terminal (CI, a background run)
+  # means nobody is there to confirm, so it stays aborted.
+  if [ -r /dev/tty ]; then
+    read -r -p "  These server files will be DELETED. Type 'yes' to continue: " ok < /dev/tty
+  else
+    die "would delete server files and there is no terminal to confirm on - nothing changed"
+  fi
   [ "$ok" = "yes" ] || die "aborted - nothing changed"
 fi
 
