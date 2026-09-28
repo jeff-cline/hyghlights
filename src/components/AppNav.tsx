@@ -24,7 +24,7 @@ export default function AppNav({ unopened = 0 }: { unopened?: number }) {
   return (
     <header className="sticky top-0 z-30 bg-white/90 backdrop-blur border-b border-gray-100">
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
-        <Link href="/home" className="shrink-0 text-lg font-black tracking-tight">
+        <Link href="/community" className="shrink-0 text-lg font-black tracking-tight">
           <Wordmark />
         </Link>
         <nav className="flex items-center gap-1 overflow-x-auto">

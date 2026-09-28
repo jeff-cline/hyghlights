@@ -55,7 +55,7 @@ function SignupForm() {
     // password they had just typed. The account exists either way, so the
     // honest move is to say so and send them to sign in once, knowingly.
     const result = await signIn('credentials', {
-      email, password, publicComputer: 'false', redirect: false, callbackUrl: '/home',
+      email, password, publicComputer: 'false', redirect: false, callbackUrl: '/community',
     })
     setSubmitting(false)
 
@@ -144,7 +144,7 @@ function SignupForm() {
               Claim {BOOTCAMP_OFFER.discount}
             </a>
             <Link
-              href="/home"
+              href="/community"
               className="mt-3 block w-full text-center text-sm font-bold text-gray-500 hover:text-gray-800"
             >
               Not now — take me to hYghlights

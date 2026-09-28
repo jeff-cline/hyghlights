@@ -21,7 +21,12 @@ export async function getOrCreateProfile(userId: string, email: string) {
 export async function addHighlight(
   userId: string,
   email: string,
-  input: { category: string; text: string; photoUrl?: string | null; videoUrl?: string | null },
+  input: {
+    category: string; text: string
+    photoUrl?: string | null; videoUrl?: string | null
+    /** PUBLIC goes on the wall; PRIVATE is only ever visible to its author. */
+    visibility?: 'PUBLIC' | 'PRIVATE'
+  },
 ) {
   const today = dayStart()
   const profile = await getOrCreateProfile(userId, email)
@@ -52,6 +57,10 @@ export async function addHighlight(
         userId,
         email,
         entryDate: today,
+        // Defaults to PRIVATE when unspecified, which is the safe direction:
+        // a caller that forgets to say keeps the post to its author rather than
+        // publishing it to everyone.
+        visibility: input.visibility === 'PUBLIC' ? 'PUBLIC' : 'PRIVATE',
         category: input.category,
         text: input.text,
         photoUrl: input.photoUrl ?? null,

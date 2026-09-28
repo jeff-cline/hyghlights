@@ -10,6 +10,8 @@ import DeleteHighlight from '@/components/DeleteHighlight'
 import { getOrCreateProfile } from '@/lib/highlights'
 import { commentsFor } from '@/lib/comments'
 import { prisma } from '@/lib/db'
+import HighlightComposer from '@/components/HighlightComposer'
+import { dayStart } from '@/lib/highlights'
 
 function fmt(d: string) {
   return new Date(d).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
@@ -21,6 +23,15 @@ export default async function CommunityPage() {
   const feed = await getCommunityFeed(user.userId, 60)
   // Needed only so a win ticked for a card that is switched off can say so.
   const profile = await getOrCreateProfile(user.userId, user.email)
+  // Community is the landing page now, so the onboarding gate lives here too —
+  // otherwise a brand-new member's first screen is a wall of other people's
+  // wins before they have been asked their own name.
+  if (!profile.onboardedAt) redirect('/onboarding')
+
+  const loggedToday = await prisma.highlight
+    .count({ where: { userId: user.userId, entryDate: dayStart() } })
+    .then((n) => n > 0)
+    .catch(() => false)
 
   // Who wrote each post, so the thread knows whether the current member may
   // remove a reply sitting under their own win.
@@ -39,7 +50,14 @@ export default async function CommunityPage() {
         The wins wall
       </div>
       <h1 className="text-2xl md:text-3xl font-black text-gray-800 mb-1">Community</h1>
-      <p className="text-gray-500 mb-8">Celebrate each other. Every win deserves a high-five 🙌.</p>
+      <p className="text-gray-500 mb-6">Celebrate each other. Every win deserves a high-five 🙌.</p>
+
+      {/* Sharing comes before reading. Putting the composer at the top is the
+          difference between a place people post and a place people scroll. */}
+      <div className="mb-8">
+        <HighlightComposer loggedToday={loggedToday}
+                           celebrationSong={profile.celebrationSong} />
+      </div>
 
       {feed.length === 0 ? (
         <div className="bg-white border border-gray-100 rounded-3xl shadow-sm p-8 text-center text-gray-500">

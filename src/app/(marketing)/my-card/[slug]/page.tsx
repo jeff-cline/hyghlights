@@ -177,7 +177,7 @@ export default async function MyCardPage(
               <p className="mx-auto mt-3 max-w-md text-gray-600">
                 You are signed in. Go and capture today&rsquo;s win.
               </p>
-              <Link href="/home"
+              <Link href="/community"
                     className="mt-6 inline-block rounded-full bg-gradient-to-r from-[#E8A849] to-[#e07800] px-8 py-3.5 font-black text-white shadow-lg transition-transform hover:scale-[1.02]">
                 Go to my account
               </Link>

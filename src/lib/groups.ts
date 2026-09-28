@@ -73,7 +73,9 @@ export async function getGroupFeed(groupId: string, userId: string, limit = 60):
   if (memberIds.length === 0) return []
 
   const highlights = await prisma.highlight.findMany({
-    where: { userId: { in: memberIds } },
+    // Public only, same as the community wall: a private win is not shared with
+    // a group either. "Private" has to mean one thing everywhere.
+    where: { userId: { in: memberIds }, visibility: 'PUBLIC' },
     orderBy: { createdAt: 'desc' },
     take: limit,
     include: { reactions: true },

@@ -7,7 +7,7 @@ export default async function OnboardingPage() {
   const user = await requireUser()
   if (!user) redirect('/login')
   const profile = await getOrCreateProfile(user.userId, user.email)
-  if (profile.onboardedAt) redirect('/home')
+  if (profile.onboardedAt) redirect('/community')
 
   return (
     <main className="max-w-xl mx-auto px-4 py-10">

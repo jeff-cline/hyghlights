@@ -13,6 +13,11 @@ const bodySchema = z.object({
   text: z.string().min(1).max(4000),
   photoUrl: z.string().url().optional().nullable(),
   videoUrl: z.string().url().optional().nullable(),
+  // Required, with no default here on purpose. addHighlight falls back to
+  // PRIVATE, so a request that omits this keeps the post to its author instead
+  // of putting it on the wall — the safe direction for a field that decides who
+  // can read somebody's words.
+  visibility: z.enum(['PUBLIC', 'PRIVATE']),
 })
 
 export async function POST(req: Request) {

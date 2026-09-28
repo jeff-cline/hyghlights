@@ -56,6 +56,14 @@ model Highlight {
   videoUrl  String?
   inJar     Boolean  @default(false) // dragged into that month's jar
 
+  /// PUBLIC (the community wall) or PRIVATE (only you).
+  ///
+  /// Defaults to PUBLIC, which is what every existing row already was in
+  /// practice — they have all been on the wall since they were written, and a
+  /// migration that quietly hid people's posts would be the wrong kind of
+  /// surprise. New posts are asked explicitly.
+  visibility String @default("PUBLIC")
+
   /// Cleared for the member's public card. Per-highlight and opt-in, because
   /// every one of these was written inside a members-only room. A card shows
   /// only what its owner has ticked, one win at a time.
@@ -68,6 +76,7 @@ model Highlight {
 
   @@index([userId, entryDate])
   @@index([category])
+  @@index([visibility, createdAt])
 }
 
 /// A reply to somebody's win.

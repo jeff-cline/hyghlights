@@ -8,7 +8,7 @@ import Wordmark from '@/components/Wordmark'
 
 function LoginForm() {
   const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/home'
+  const callbackUrl = searchParams.get('callbackUrl') || '/community'
 
   // Carried from signup and from the SSO welcome, so nobody retypes an
   // address they just entered on the previous screen.

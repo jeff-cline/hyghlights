@@ -35,6 +35,10 @@ function nameFromEmail(email: string) {
 // and inside the Beyond Limits Community tab.
 export async function getCommunityFeed(currentUserId: string, limit = 50): Promise<FeedItem[]> {
   const highlights = await prisma.highlight.findMany({
+    // Public only. A private hYghlight is for its author and nobody else, so it
+    // is filtered in the query rather than hidden in the template — a filter
+    // that lives in the UI is one refactor away from not existing.
+    where: { visibility: 'PUBLIC' },
     orderBy: { createdAt: 'desc' },
     take: limit,
     include: { reactions: true },

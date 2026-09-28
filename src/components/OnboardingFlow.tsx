@@ -44,7 +44,7 @@ export default function OnboardingFlow({ initialName }: { initialName: string })
         markOnboarded: true,
       }),
     })
-    window.location.assign('/home')
+    window.location.assign('/community')
   }
 
   return (
