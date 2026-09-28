@@ -5,7 +5,11 @@ import { CATEGORY_BY_KEY, categoryLabel } from '@/lib/categories'
 import ReactionBar from '@/components/ReactionBar'
 import HighlightMedia from '@/components/HighlightMedia'
 import ShareOnCardToggle from '@/components/ShareOnCardToggle'
+import CommentThread from '@/components/CommentThread'
+import DeleteHighlight from '@/components/DeleteHighlight'
 import { getOrCreateProfile } from '@/lib/highlights'
+import { commentsFor } from '@/lib/comments'
+import { prisma } from '@/lib/db'
 
 function fmt(d: string) {
   return new Date(d).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' })
@@ -17,6 +21,17 @@ export default async function CommunityPage() {
   const feed = await getCommunityFeed(user.userId, 60)
   // Needed only so a win ticked for a card that is switched off can say so.
   const profile = await getOrCreateProfile(user.userId, user.email)
+
+  // Who wrote each post, so the thread knows whether the current member may
+  // remove a reply sitting under their own win.
+  const owners = Object.fromEntries(
+    (await prisma.highlight.findMany({
+      where: { id: { in: feed.map((h) => h.id) } },
+      select: { id: true, userId: true },
+    }).catch(() => [])).map((h) => [h.id, h.userId]),
+  )
+  // One query for every thread on the page rather than one per post.
+  const threads = await commentsFor(feed.map((h) => h.id), user.userId, owners)
 
   return (
     <main className="max-w-2xl mx-auto px-4 py-10">
@@ -47,9 +62,13 @@ export default async function CommunityPage() {
                 <HighlightMedia photoUrl={h.photoUrl} videoUrl={h.videoUrl} />
                 <ReactionBar highlightId={h.id} counts={h.counts} mine={h.mine} />
                 {h.isMine && (
-                  <ShareOnCardToggle highlightId={h.id} initial={h.isShareable}
-                                     cardPublic={profile.cardPublic} />
+                  <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+                    <ShareOnCardToggle highlightId={h.id} initial={h.isShareable}
+                                       cardPublic={profile.cardPublic} />
+                    <DeleteHighlight highlightId={h.id} />
+                  </div>
                 )}
+                <CommentThread highlightId={h.id} initial={threads[h.id] ?? []} />
               </div>
             )
           })}

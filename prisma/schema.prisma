@@ -64,9 +64,35 @@ model Highlight {
   createdAt DateTime @default(now())
 
   reactions Reaction[]
+  comments  Comment[]
 
   @@index([userId, entryDate])
   @@index([category])
+}
+
+/// A reply to somebody's win.
+///
+/// One level deep, deliberately. Threaded replies turn a wall of
+/// encouragement into an argument with indentation, and this community is for
+/// celebrating each other rather than debating. If two people want a
+/// conversation there is already a private channel for it.
+model Comment {
+  id          String    @id @default(cuid())
+  highlightId String
+  highlight   Highlight @relation(fields: [highlightId], references: [id], onDelete: Cascade)
+  fromUserId  String
+  fromEmail   String
+  /// Denormalised so a comment still reads correctly if the author later
+  /// changes their display name — and so the feed needs no second query.
+  fromName    String
+  text        String
+  createdAt   DateTime  @default(now())
+  /// Soft delete. The row stays so the thread does not reshuffle under people
+  /// mid-read, and so a removal is auditable rather than silent.
+  deletedAt   DateTime?
+
+  @@index([highlightId, createdAt])
+  @@index([fromUserId])
 }
 
 // Celebrate each other: high-fives, balloons, dance parties.
